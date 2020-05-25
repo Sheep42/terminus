@@ -2,27 +2,28 @@ package terminus
 
 type Game struct {
 
-	current_scene Scene
+	current_scene *Scene
 
 }
 
-func NewGame( current_scene Scene ) *Game {
+func NewGame( current_scene *Scene ) *Game {
 
 	game := &Game{
-		current_scene
+		current_scene,
 	}
 
 	return game
 
 }
 
-func (*Game) Run() {
+func (game *Game) Run() {
 
+	game.current_scene.Init()
 
 // game_loop:
 	for {
 
-
+		game.current_scene.Draw()
 
 	}
 

@@ -1,17 +1,17 @@
 package terminus
 
-import(
+import (
 
-	"github.com/gdamore/tcell",
+	"github.com/gdamore/tcell"
 
 )
 
-const {
+const (
 
-	WHITE := tcell.ColorWhite,
-	BLACK := tcell.ColorBlack,
-	RED := tcell.ColorRed,
-	GREEN := tcell.ColorGreen,
-	BLUE := tcell.ColorBlue,
+	WHITE = tcell.ColorWhite
+	BLACK = tcell.ColorBlack
+	RED = tcell.ColorRed
+	GREEN = tcell.ColorGreen
+	BLUE = tcell.ColorBlue
 
-}
+)

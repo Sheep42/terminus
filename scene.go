@@ -3,6 +3,7 @@ package terminus
 import(
 
 	"github.com/gdamore/tcell"
+	"os"
 
 )
 
@@ -12,32 +13,88 @@ type Scene struct {
 	foreground tcell.Color
 	background tcell.Color
 
-	entities []Entity
+	entities []*Entity
 
 }
 
-func NewScene() *Scene {
+func NewScene() (*Scene, error) {
 
-	scene := &Scene{
-		tcell.NewScreen(),
-		WHITE,
-		BLACK,
-		[]Entity{}
+	screen, err := tcell.NewScreen()
+
+	if err != nil {
+		return nil, err
 	}
 
-	return scene
+	scene := &Scene{
+		screen,
+		BLACK,
+		WHITE,
+		[]*Entity{},
+	}
+
+	return scene, nil
 
 }
 
-func NewScene( fg, bg tcell.Color ) *Scene {
+func NewSceneCustom( fg, bg tcell.Color ) (*Scene, error) {
+
+	screen, err := tcell.NewScreen()
+
+	if err != nil {
+		return nil, err
+	}
 
 	scene := &Scene{
-		tcell.NewScreen(),
+		screen,
 		fg,
 		bg,
-		[]Entity{}
+		[]*Entity{},
 	}
 
-	return scene
+	return scene, nil
+
+}
+
+func (scene *Scene) Add( entity *Entity ) {
+
+	scene.entities = append( scene.entities, entity )
+
+}
+
+func (scene *Scene) Init() {
+
+	screen := scene.screen
+
+	screen_style := tcell.StyleDefault.
+		Foreground(scene.foreground).
+		Background(scene.background)
+
+	screen.SetStyle(screen_style)
+
+	screen.Init()
+
+}
+
+func (scene *Scene) Draw() {
+
+	screen := scene.screen
+
+	screen.Clear()
+	screen.Show()
+
+	ev := screen.PollEvent()
+
+	switch ev := ev.(type) {
+
+		case *tcell.EventResize:
+			screen.Sync()
+		case *tcell.EventKey:
+			if ev.Key() == tcell.KeyEscape {
+				screen.Fini()
+				os.Exit(0)
+			}
+		default:
+
+	}
 
 }
