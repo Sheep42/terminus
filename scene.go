@@ -27,8 +27,8 @@ func NewScene() (*Scene, error) {
 
 	scene := &Scene{
 		screen,
-		BLACK,
 		WHITE,
+		BLACK,
 		[]*Entity{},
 	}
 
@@ -65,13 +65,13 @@ func (scene *Scene) Init() {
 
 	screen := scene.screen
 
+	screen.Init()
+
 	screen_style := tcell.StyleDefault.
 		Foreground(scene.foreground).
 		Background(scene.background)
 
 	screen.SetStyle(screen_style)
-
-	screen.Init()
 
 }
 
@@ -82,6 +82,7 @@ func (scene *Scene) Draw() {
 	screen.Clear()
 	screen.Show()
 
+	// TODO: Remove test polling
 	ev := screen.PollEvent()
 
 	switch ev := ev.(type) {
