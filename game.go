@@ -28,3 +28,9 @@ func (game *Game) Run() {
 	}
 
 }
+
+func (game *Game) ChangeScene( scene *Scene ) {
+
+	game.current_scene = scene
+
+}
