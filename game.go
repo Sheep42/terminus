@@ -9,7 +9,7 @@ import (
 type Game struct {
 
 	screen tcell.Screen
-	scenes []Scene
+	scenes []IScene
 	scene_index int
 
 }
@@ -22,7 +22,7 @@ func NewGame() *Game {
 
 }
 
-func (game *Game) Init( scenes []Scene ) {
+func (game *Game) Init( scenes []IScene ) {
 	
 	// TODO: Error checking
 	screen, _ := tcell.NewScreen()

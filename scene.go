@@ -1,12 +1,12 @@
 package terminus
 
 import (
-	"os"
+	// "os"
 
 	"github.com/gdamore/tcell"
 )
 
-type Scene interface {
+type IScene interface {
 
 	Init()
 	Update()
@@ -14,7 +14,7 @@ type Scene interface {
 
 }
 
-type BasicScene struct {
+type Scene struct {
 
 	game *Game
 
@@ -26,9 +26,9 @@ type BasicScene struct {
 
 }
 
-func NewScene( game *Game ) *BasicScene {
+func NewScene( game *Game ) *Scene {
 
-	scene := &BasicScene{
+	scene := &Scene{
 		game,
 		WHITE,
 		BLACK,
@@ -40,9 +40,9 @@ func NewScene( game *Game ) *BasicScene {
 
 }
 
-func NewSceneCustom(game *Game, fg, bg tcell.Color) *BasicScene {
+func NewSceneCustom(game *Game, fg, bg tcell.Color) *Scene {
 
-	scene := &BasicScene{
+	scene := &Scene{
 		game,
 		fg,
 		bg,
@@ -54,7 +54,7 @@ func NewSceneCustom(game *Game, fg, bg tcell.Color) *BasicScene {
 
 }
 
-func (scene *BasicScene) Init() {
+func (scene *Scene) Init() {
 
 	screen := scene.game.screen
 
@@ -67,29 +67,38 @@ func (scene *BasicScene) Init() {
 
 }
 
-func (scene *BasicScene) Update() {
+func (scene *Scene) Update() {
 
 	// TODO: Remove test polling
 	screen := scene.game.screen
 
-	ev := screen.PollEvent()
+	// TODO: Break entity update out into sep function 
+	if len( scene.entities ) > 0 {
 
-	switch ev := ev.(type) {
-
-	case *tcell.EventResize:
-		screen.Sync()
-	case *tcell.EventKey:
-		if ev.Key() == tcell.KeyEscape {
-			screen.Fini()
-			os.Exit(0)
+		for _, entity := range scene.entities {
+			entity.Update( screen )
 		}
-	default:
 
 	}
 
+	// ev := screen.PollEvent()
+
+	// switch ev := ev.(type) {
+
+	// case *tcell.EventResize:
+	// 	screen.Sync()
+	// case *tcell.EventKey:
+	// 	if ev.Key() == tcell.KeyEscape {
+	// 		screen.Fini()
+	// 		os.Exit(0)
+	// 	}
+	// default:
+
+	// }
+
 }
 
-func (scene *BasicScene) Draw() {
+func (scene *Scene) Draw() {
 
 	screen := scene.game.screen
 
@@ -98,7 +107,7 @@ func (scene *BasicScene) Draw() {
 	if len( scene.entities ) > 0 {
 
 		for _, entity := range scene.entities {
-			screen.SetContent( entity.x, entity.y, entity.sprite, nil, scene.style )
+			entity.Draw( screen, scene.style )
 		}
 
 	}
@@ -107,13 +116,13 @@ func (scene *BasicScene) Draw() {
 
 }
 
-func (scene *BasicScene) Add(entity *Entity) {
+func (scene *Scene) Add(entity *Entity) {
 
 	scene.entities = append(scene.entities, entity)
 
 }
 
-func (scene *BasicScene) Game() *Game {
+func (scene *Scene) Game() *Game {
 
 	return scene.game
 
