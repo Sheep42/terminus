@@ -11,8 +11,6 @@ type Scene interface {
 	Init()
 	Update()
 	Draw()
-	Add( *Entity )
-	Game() *Game
 
 }
 
@@ -24,6 +22,7 @@ type BasicScene struct {
 	background tcell.Color
 
 	entities []*Entity
+	style tcell.Style
 
 }
 
@@ -34,6 +33,7 @@ func NewScene( game *Game ) *BasicScene {
 		WHITE,
 		BLACK,
 		[]*Entity{},
+		tcell.StyleDefault,
 	}
 
 	return scene
@@ -47,6 +47,7 @@ func NewSceneCustom(game *Game, fg, bg tcell.Color) *BasicScene {
 		fg,
 		bg,
 		[]*Entity{},
+		tcell.StyleDefault,
 	}
 
 	return scene
@@ -62,6 +63,7 @@ func (scene *BasicScene) Init() {
 		Background(scene.background)
 
 	screen.SetStyle(screen_style)
+	scene.style = screen_style
 
 }
 
@@ -92,6 +94,15 @@ func (scene *BasicScene) Draw() {
 	screen := scene.game.screen
 
 	screen.Clear()
+
+	if len( scene.entities ) > 0 {
+
+		for _, entity := range scene.entities {
+			screen.SetContent( entity.x, entity.y, entity.sprite, nil, scene.style )
+		}
+
+	}
+
 	screen.Show()
 
 }

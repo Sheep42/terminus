@@ -51,8 +51,10 @@ func (game *Game) Start() {
 
 func (game *Game) NextScene() {
 
-	if game.scene_index < len( game.scenes ) {
+	if game.scene_index < len( game.scenes ) - 1 {
 		game.scene_index += 1
+
+		game.scenes[game.scene_index].Init()
 	}
 
 }
@@ -61,6 +63,8 @@ func (game *Game) PrevScene() {
 
 	if game.scene_index > 0 {
 		game.scene_index -= 1
+
+		game.scenes[game.scene_index].Init()
 	}
 	
 }
