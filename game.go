@@ -1,36 +1,70 @@
 package terminus
 
+import (
+
+	"github.com/gdamore/tcell"
+
+)
+
 type Game struct {
 
-	current_scene *Scene
+	screen tcell.Screen
+	scenes []Scene
+	scene_index int
 
 }
 
-func NewGame( current_scene *Scene ) *Game {
+func NewGame() *Game {
 
-	game := &Game{
-		current_scene,
-	}
+	game := &Game{}
 
 	return game
 
 }
 
-func (game *Game) Run() {
+func (game *Game) Init( scenes []Scene ) {
+	
+	// TODO: Error checking
+	screen, _ := tcell.NewScreen()
 
-	game.current_scene.Init()
+	game.screen = screen
+
+	game.scene_index = 0
+	game.scenes = scenes
+
+	game.screen.Init()
+	game.scenes[game.scene_index].Init()
+
+}
+
+func (game *Game) Start() {
 
 // game_loop:
 	for {
 
-		game.current_scene.Draw()
+		game.scenes[game.scene_index].Update()
+		game.scenes[game.scene_index].Draw()
 
 	}
 
 }
 
-func (game *Game) ChangeScene( scene *Scene ) {
+func (game *Game) NextScene() {
 
-	game.current_scene = scene
+	if game.scene_index < len( game.scenes ) {
+		game.scene_index += 1
+	}
 
+}
+
+func (game *Game) PrevScene() {
+
+	if game.scene_index > 0 {
+		game.scene_index -= 1
+	}
+	
+}
+
+func (game *Game) Screen() tcell.Screen {
+	return game.screen
 }

@@ -1,15 +1,25 @@
 package terminus
 
-import(
-
-	"github.com/gdamore/tcell"
+import (
 	"os"
 
+	"github.com/gdamore/tcell"
 )
 
-type Scene struct {
+type Scene interface {
 
-	screen tcell.Screen
+	Init()
+	Update()
+	Draw()
+	Add( *Entity )
+	Game() *Game
+
+}
+
+type BasicScene struct {
+
+	game *Game
+
 	foreground tcell.Color
 	background tcell.Color
 
@@ -17,55 +27,35 @@ type Scene struct {
 
 }
 
-func NewScene() (*Scene, error) {
+func NewScene( game *Game ) *BasicScene {
 
-	screen, err := tcell.NewScreen()
-
-	if err != nil {
-		return nil, err
-	}
-
-	scene := &Scene{
-		screen,
+	scene := &BasicScene{
+		game,
 		WHITE,
 		BLACK,
 		[]*Entity{},
 	}
 
-	return scene, nil
+	return scene
 
 }
 
-func NewSceneCustom( fg, bg tcell.Color ) (*Scene, error) {
+func NewSceneCustom(game *Game, fg, bg tcell.Color) *BasicScene {
 
-	screen, err := tcell.NewScreen()
-
-	if err != nil {
-		return nil, err
-	}
-
-	scene := &Scene{
-		screen,
+	scene := &BasicScene{
+		game,
 		fg,
 		bg,
 		[]*Entity{},
 	}
 
-	return scene, nil
+	return scene
 
 }
 
-func (scene *Scene) Add( entity *Entity ) {
+func (scene *BasicScene) Init() {
 
-	scene.entities = append( scene.entities, entity )
-
-}
-
-func (scene *Scene) Init() {
-
-	screen := scene.screen
-
-	screen.Init()
+	screen := scene.game.screen
 
 	screen_style := tcell.StyleDefault.
 		Foreground(scene.foreground).
@@ -75,27 +65,45 @@ func (scene *Scene) Init() {
 
 }
 
-func (scene *Scene) Draw() {
-
-	screen := scene.screen
-
-	screen.Clear()
-	screen.Show()
+func (scene *BasicScene) Update() {
 
 	// TODO: Remove test polling
+	screen := scene.game.screen
+
 	ev := screen.PollEvent()
 
 	switch ev := ev.(type) {
 
-		case *tcell.EventResize:
-			screen.Sync()
-		case *tcell.EventKey:
-			if ev.Key() == tcell.KeyEscape {
-				screen.Fini()
-				os.Exit(0)
-			}
-		default:
+	case *tcell.EventResize:
+		screen.Sync()
+	case *tcell.EventKey:
+		if ev.Key() == tcell.KeyEscape {
+			screen.Fini()
+			os.Exit(0)
+		}
+	default:
 
 	}
+
+}
+
+func (scene *BasicScene) Draw() {
+
+	screen := scene.game.screen
+
+	screen.Clear()
+	screen.Show()
+
+}
+
+func (scene *BasicScene) Add(entity *Entity) {
+
+	scene.entities = append(scene.entities, entity)
+
+}
+
+func (scene *BasicScene) Game() *Game {
+
+	return scene.game
 
 }
