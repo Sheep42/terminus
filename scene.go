@@ -11,6 +11,7 @@ type IScene interface {
 	Init()
 	Update()
 	Draw()
+	Entities() []*Entity
 
 }
 
@@ -67,42 +68,11 @@ func (scene *Scene) Init() {
 
 }
 
-func (scene *Scene) Update() {
-
-	// TODO: Remove test polling
-	screen := scene.game.screen
-
-	// TODO: Break entity update out into sep function 
-	if len( scene.entities ) > 0 {
-
-		for _, entity := range scene.entities {
-			entity.Update( screen )
-		}
-
-	}
-
-	// ev := screen.PollEvent()
-
-	// switch ev := ev.(type) {
-
-	// case *tcell.EventResize:
-	// 	screen.Sync()
-	// case *tcell.EventKey:
-	// 	if ev.Key() == tcell.KeyEscape {
-	// 		screen.Fini()
-	// 		os.Exit(0)
-	// 	}
-	// default:
-
-	// }
-
-}
+func (scene *Scene) Update() { }
 
 func (scene *Scene) Draw() {
 
 	screen := scene.game.screen
-
-	screen.Clear()
 
 	if len( scene.entities ) > 0 {
 
@@ -111,8 +81,6 @@ func (scene *Scene) Draw() {
 		}
 
 	}
-
-	screen.Show()
 
 }
 
@@ -126,4 +94,8 @@ func (scene *Scene) Game() *Game {
 
 	return scene.game
 
+}
+
+func (scene *Scene) Entities() []*Entity {
+	return scene.entities
 }

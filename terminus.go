@@ -15,3 +15,13 @@ const (
 	BLUE = tcell.ColorBlue
 
 )
+
+const (
+
+	KEY_ESC = tcell.KeyEscape
+	KEY_UP = tcell.KeyUp
+	KEY_DOWN = tcell.KeyDown
+	KEY_RIGHT = tcell.KeyRight
+	KEY_LEFT = tcell.KeyLeft
+
+)
