@@ -41,6 +41,14 @@ func (game *Game) Init( scenes []IScene ) {
 	game.screen.Init()
 	game.scenes[game.scene_index].Init()
 
+	if len( game.scenes[game.scene_index].Entities() ) > 0 {
+
+		for _, entity := range game.scenes[game.scene_index].Entities() {
+			entity.Init()
+		}
+
+	}
+
 	game.chan_key_press = make(chan *tcell.EventKey)
 
 }
@@ -110,7 +118,7 @@ game_loop:
 		if len( scene.Entities() ) > 0 {
 
 			for _, entity := range scene.Entities() {
-				entity.Update( screen )
+				entity.Update()
 			}
 
 		}

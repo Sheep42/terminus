@@ -72,12 +72,10 @@ func (scene *Scene) Update() { }
 
 func (scene *Scene) Draw() {
 
-	screen := scene.game.screen
-
 	if len( scene.entities ) > 0 {
 
 		for _, entity := range scene.entities {
-			entity.Draw( screen, scene.style )
+			entity.Draw()
 		}
 
 	}
@@ -86,6 +84,8 @@ func (scene *Scene) Draw() {
 
 func (scene *Scene) Add(entity *Entity) {
 
+	entity.game = scene.game
+	entity.scene = scene
 	scene.entities = append(scene.entities, entity)
 
 }
