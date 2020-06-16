@@ -51,6 +51,8 @@ func (game *Game) getInput() {
 
 	for {
 
+		game.input = nil
+		
 		ev := screen.PollEvent()
 
 		switch ev := ev.(type) {
