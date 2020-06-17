@@ -1,16 +1,11 @@
 package terminus
 
-import (
-
-	"github.com/gdamore/tcell"
-
-)
-
 type IEntity interface {
 
 	Init()
-	Update( tcell.Screen )
-	Draw( tcell.Screen, tcell.Style )
+	Update()
+	Draw()
+	AddEntityToScene( scene *Scene )
 
 }
 
@@ -25,7 +20,18 @@ type Entity struct {
 
 }
 
-func NewEntity( x, y int, sprite rune ) *Entity {
+func NewEntity( x, y int) *Entity {
+
+	entity := &Entity{
+		x: x,
+		y: y,
+	}
+
+	return entity
+
+}
+
+func NewSpriteEntity( x, y int, sprite rune ) *Entity {
 
 	entity := &Entity{
 		x: x,
@@ -45,8 +51,17 @@ func (entity *Entity) Draw() {
 
 	screen := entity.game.screen
 	style := entity.scene.style
-	
-	screen.SetContent( entity.x, entity.y, entity.sprite, nil, style )
+
+	if 0 != entity.sprite {
+		screen.SetContent( entity.x, entity.y, entity.sprite, nil, style )
+	}
+
+}
+
+func (entity *Entity) AddEntityToScene( scene *Scene ) {
+
+	entity.game = scene.game
+	entity.scene = scene
 
 }
 

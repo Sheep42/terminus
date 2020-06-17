@@ -1,8 +1,6 @@
 package terminus
 
 import (
-	// "os"
-
 	"github.com/gdamore/tcell"
 )
 
@@ -11,7 +9,7 @@ type IScene interface {
 	Init()
 	Update()
 	Draw()
-	Entities() []*Entity
+	Entities() []IEntity
 
 }
 
@@ -22,7 +20,7 @@ type Scene struct {
 	foreground tcell.Color
 	background tcell.Color
 
-	entities []*Entity
+	entities []IEntity
 	style tcell.Style
 
 }
@@ -33,7 +31,7 @@ func NewScene( game *Game ) *Scene {
 		game,
 		WHITE,
 		BLACK,
-		[]*Entity{},
+		[]IEntity{},
 		tcell.StyleDefault,
 	}
 
@@ -47,7 +45,7 @@ func NewSceneCustom(game *Game, fg, bg tcell.Color) *Scene {
 		game,
 		fg,
 		bg,
-		[]*Entity{},
+		[]IEntity{},
 		tcell.StyleDefault,
 	}
 
@@ -82,10 +80,9 @@ func (scene *Scene) Draw() {
 
 }
 
-func (scene *Scene) Add(entity *Entity) {
+func (scene *Scene) Add(entity IEntity) {
 
-	entity.game = scene.game
-	entity.scene = scene
+	entity.AddEntityToScene( scene )
 	scene.entities = append(scene.entities, entity)
 
 }
@@ -96,6 +93,6 @@ func (scene *Scene) Game() *Game {
 
 }
 
-func (scene *Scene) Entities() []*Entity {
+func (scene *Scene) Entities() []IEntity {
 	return scene.entities
 }
