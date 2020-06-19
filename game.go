@@ -11,6 +11,8 @@ import (
 type Game struct {
 
 	screen tcell.Screen
+	width int
+	height int
 	scenes []IScene
 	scene_index int
 	exit_key tcell.Key
@@ -66,6 +68,7 @@ func (game *Game) getInput() {
 		switch ev := ev.(type) {
 			case *tcell.EventResize:
 				screen.Sync()
+				game.width, game.height = screen.Size()
 			case *tcell.EventKey:
 				select{
 					case game.chan_key_press <-ev:
@@ -92,6 +95,8 @@ func (game *Game) Start() {
 	clock := time.Now()
 
 	go game.getInput();
+
+	game.width, game.height = screen.Size()
 
 game_loop:
 	for {
@@ -149,10 +154,6 @@ func (game *Game) PrevScene() {
 	
 }
 
-func (game *Game) Screen() tcell.Screen {
-	return game.screen
-}
-
 func (game *Game) ExitKey() tcell.Key {
 	return game.exit_key
 }
@@ -163,4 +164,10 @@ func (game *Game) SetExitKey( exit_key tcell.Key ) {
 
 func (game *Game) Input() *tcell.EventKey {
 	return game.input
+}
+
+func ( game *Game ) ScreenSize() ( int, int ) {
+
+	return game.width, game.height 
+
 }
