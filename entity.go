@@ -43,11 +43,11 @@ func NewSpriteEntity( x, y int, sprite rune ) *Entity {
 
 }
 
-func (entity *Entity) Init() {}
+func ( entity *Entity ) Init() {}
 
-func (entity *Entity) Update( delta float64 ) { }
+func ( entity *Entity ) Update( delta float64 ) { }
 
-func (entity *Entity) Draw() {
+func ( entity *Entity ) Draw() {
 
 	screen := entity.game.screen
 	style := entity.scene.style
@@ -58,41 +58,41 @@ func (entity *Entity) Draw() {
 
 }
 
-func (entity *Entity) AddEntityToScene( scene *Scene ) {
+func ( entity *Entity ) AddEntityToScene( scene *Scene ) {
 
 	entity.game = scene.game
 	entity.scene = scene
 
 }
 
-func (entity *Entity) GetScene() *Scene {
+func ( entity *Entity ) GetScene() *Scene {
 	return entity.scene
 }
 
-func (entity *Entity) GetGame() *Game {
+func ( entity *Entity ) GetGame() *Game {
 	return entity.game
 }
 
-func (entity *Entity) SetX( x int ) {
+func ( entity *Entity ) SetX( x int ) {
 	entity.x = x
 }
 
-func (entity *Entity) GetX() int { 
+func ( entity *Entity ) GetX() int { 
 	return entity.x 
 }
 
-func (entity *Entity) SetY( y int ) {
+func ( entity *Entity ) SetY( y int ) {
 	entity.y = y
 }
 
-func (entity *Entity) GetY() int {
+func ( entity *Entity ) GetY() int {
 	return entity.y
 }
 
-func (entity *Entity) SetSprite( sprite rune ) {
+func ( entity *Entity ) SetSprite( sprite rune ) {
 	entity.sprite = sprite
 }
 
-func (entity *Entity) GetSprite() rune {
+func ( entity *Entity ) GetSprite() rune {
 	return entity.sprite
 }

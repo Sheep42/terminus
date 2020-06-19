@@ -3,7 +3,6 @@ package terminus
 import (
 
 	"github.com/gdamore/tcell"
-	// "os"
 	"time"
 
 )
@@ -29,7 +28,7 @@ func NewGame() *Game {
 
 }
 
-func (game *Game) Init( scenes []IScene ) {
+func ( game *Game ) Init( scenes []IScene ) {
 	
 	// TODO: Error checking
 	screen, _ := tcell.NewScreen()
@@ -55,7 +54,7 @@ func (game *Game) Init( scenes []IScene ) {
 
 }
 
-func (game *Game) getInput() {
+func ( game *Game ) getInput() {
 		
 	screen := game.screen
 
@@ -65,22 +64,26 @@ func (game *Game) getInput() {
 
 		ev := screen.PollEvent()
 
-		switch ev := ev.(type) {
+		switch ev := ev.( type ) {
+
 			case *tcell.EventResize:
 				screen.Sync()
 				game.width, game.height = screen.Size()
+
 			case *tcell.EventKey:
-				select{
+				select {
 					case game.chan_key_press <-ev:
 				}
+
 			default:
+
 		}
 
 	}
 
 }
 
-func (game *Game) handleInput() {
+func ( game *Game ) handleInput() {
 
 	select {
 		case game.input = <-game.chan_key_press:
@@ -89,7 +92,7 @@ func (game *Game) handleInput() {
 
 }
 
-func (game *Game) Start() {
+func ( game *Game ) Start() {
 
 	screen := game.screen
 	clock := time.Now()
@@ -101,10 +104,8 @@ func (game *Game) Start() {
 game_loop:
 	for {
 
-		//TODO: Need to pass tick time to update
-		
 		update := time.Now()
-		delta := update.Sub(clock).Seconds()
+		delta := update.Sub( clock ).Seconds()
 		clock = update
 		
 		screen.Clear()
@@ -134,7 +135,7 @@ game_loop:
 
 }
 
-func (game *Game) NextScene() {
+func ( game *Game ) NextScene() {
 
 	if game.scene_index < len( game.scenes ) - 1 {
 		game.scene_index += 1
@@ -144,7 +145,7 @@ func (game *Game) NextScene() {
 
 }
 
-func (game *Game) PrevScene() {
+func ( game *Game ) PrevScene() {
 
 	if game.scene_index > 0 {
 		game.scene_index -= 1
@@ -154,15 +155,15 @@ func (game *Game) PrevScene() {
 	
 }
 
-func (game *Game) ExitKey() tcell.Key {
+func ( game *Game ) ExitKey() tcell.Key {
 	return game.exit_key
 }
 
-func (game *Game) SetExitKey( exit_key tcell.Key ) {
+func ( game *Game ) SetExitKey( exit_key tcell.Key ) {
 	game.exit_key = exit_key
 }
 
-func (game *Game) Input() *tcell.EventKey {
+func ( game *Game ) Input() *tcell.EventKey {
 	return game.input
 }
 
