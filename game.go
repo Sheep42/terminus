@@ -4,7 +4,7 @@ import (
 
 	"github.com/gdamore/tcell"
 	// "os"
-	// "time"
+	"time"
 
 )
 
@@ -89,7 +89,7 @@ func (game *Game) handleInput() {
 func (game *Game) Start() {
 
 	screen := game.screen
-	// clock := time.Now()
+	clock := time.Now()
 
 	go game.getInput();
 
@@ -98,10 +98,9 @@ game_loop:
 
 		//TODO: Need to pass tick time to update
 		
-		// update := time.Now()
-		// delta := update.Sub(clock).Seconds()
-		// clock = update
-		// 
+		update := time.Now()
+		delta := update.Sub(clock).Seconds()
+		clock = update
 		
 		screen.Clear()
 
@@ -113,18 +112,17 @@ game_loop:
 		}
 
 		scene := game.scenes[game.scene_index]
-		scene.Update()
+		scene.Update( delta )
 
 		if len( scene.Entities() ) > 0 {
 
 			for _, entity := range scene.Entities() {
-				entity.Update()
+				entity.Update( delta )
 			}
 
 		}
 
 		scene.Draw()
-
 		screen.Show()
 
 	}

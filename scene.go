@@ -7,7 +7,7 @@ import (
 type IScene interface {
 
 	Init()
-	Update()
+	Update(delta float64)
 	Draw()
 	Entities() []IEntity
 
@@ -66,7 +66,7 @@ func (scene *Scene) Init() {
 
 }
 
-func (scene *Scene) Update() { }
+func (scene *Scene) Update( delta float64 ) { }
 
 func (scene *Scene) Draw() {
 

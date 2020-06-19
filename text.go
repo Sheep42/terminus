@@ -22,8 +22,8 @@ func (text *Text) Init() {
 	text.Entity.Init() // super
 }
 
-func (text *Text) Update() { 
-	text.Entity.Update() // super
+func (text *Text) Update( delta float64 ) { 
+	text.Entity.Update( delta ) // super
 }
 
 func (text *Text) Draw() {

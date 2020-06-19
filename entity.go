@@ -3,7 +3,7 @@ package terminus
 type IEntity interface {
 
 	Init()
-	Update()
+	Update( delta float64 )
 	Draw()
 	AddEntityToScene( scene *Scene )
 
@@ -45,7 +45,7 @@ func NewSpriteEntity( x, y int, sprite rune ) *Entity {
 
 func (entity *Entity) Init() {}
 
-func (entity *Entity) Update() { }
+func (entity *Entity) Update( delta float64 ) { }
 
 func (entity *Entity) Draw() {
 
