@@ -37,3 +37,11 @@ func (text *Text) Draw() {
 	}
 	
 }
+
+func (text *Text) SetText( new_text string ) {
+	text.text = new_text
+}
+
+func (text *Text) GetText() string {
+	return text.text
+}
