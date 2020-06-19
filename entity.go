@@ -20,7 +20,7 @@ type Entity struct {
 
 }
 
-func NewEntity( x, y int) *Entity {
+func NewEntity( x, y int ) *Entity {
 
 	entity := &Entity{
 		x: x,
