@@ -9,7 +9,7 @@ type Text struct {
 
 func NewText( x, y int, text string ) *Text {
 
-	t := &Text{
+	t := &Text {
 		Entity: NewEntity(x, y),
 		text: text,
 	}
