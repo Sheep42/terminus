@@ -6,6 +6,8 @@ import (
 	"github.com/gdamore/tcell"
 )
 
+// Game is collection of properties used to
+// abstract interaction with a tcell Screen
 type Game struct {
 	screen       tcell.Screen
 	width        int
@@ -17,6 +19,7 @@ type Game struct {
 	chanKeyPress chan *tcell.EventKey
 }
 
+// NewGame creates a game
 func NewGame() *Game {
 
 	game := &Game{}
@@ -25,6 +28,8 @@ func NewGame() *Game {
 
 }
 
+// Init takes an array of scenes, and sets up the game
+// before the loop is started
 func (game *Game) Init(scenes []IScene) {
 
 	// TODO: Error checking
@@ -91,6 +96,7 @@ func (game *Game) handleInput() {
 
 }
 
+// Start begins listening for input and starts the game loop
 func (game *Game) Start() {
 
 	screen := game.screen
@@ -139,38 +145,46 @@ game_loop:
 
 }
 
+// NextScene increments the game sceneIndex if
+// we are not already at the last scene
 func (game *Game) NextScene() {
 
 	if game.sceneIndex < len(game.scenes)-1 {
-		game.sceneIndex += 1
+		game.sceneIndex++
 
 		game.scenes[game.sceneIndex].Init()
 	}
 
 }
 
+// PrevScene decrements the game sceneIndex if
+// we are not already at the first scene
 func (game *Game) PrevScene() {
 
 	if game.sceneIndex > 0 {
-		game.sceneIndex -= 1
+		game.sceneIndex--
 
 		game.scenes[game.sceneIndex].Init()
 	}
 
 }
 
+// ExitKey gets the assigned exit key
 func (game *Game) ExitKey() tcell.Key {
 	return game.exitKey
 }
 
+// SetExitKey sets the game's exit key
 func (game *Game) SetExitKey(exitKey tcell.Key) {
 	game.exitKey = exitKey
 }
 
+// Input gets the current input as an EventKey
 func (game *Game) Input() *tcell.EventKey {
 	return game.input
 }
 
+// ScreenSize returns the screen size - (width, height)
 func (game *Game) ScreenSize() (int, int) {
 
 	return game.width, game.height
