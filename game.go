@@ -64,8 +64,6 @@ func (game *Game) getInput() {
 
 	for {
 
-		game.input = nil
-
 		ev = screen.PollEvent()
 
 		switch eventType := ev.(type) {
@@ -92,6 +90,7 @@ func (game *Game) handleInput() {
 	select {
 	case game.input = <-game.chanKeyPress:
 	default:
+		game.input = nil
 	}
 
 }
@@ -115,12 +114,7 @@ game_loop:
 
 		screen.Clear()
 
-		select {
-		case <-game.chanKeyPress:
-			game.handleInput()
-			continue
-		default:
-		}
+		game.handleInput()
 
 		if game.input != nil && game.input.Key() == game.exitKey {
 			screen.Fini()
