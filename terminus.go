@@ -4,6 +4,7 @@ import (
 	"github.com/gdamore/tcell"
 )
 
+// Colors
 const (
 	White = tcell.ColorWhite
 	Black = tcell.ColorBlack
@@ -12,6 +13,7 @@ const (
 	Blue  = tcell.ColorBlue
 )
 
+// Event Keys
 const (
 	KeyEsc   = tcell.KeyEscape
 	KeyUp    = tcell.KeyUp
