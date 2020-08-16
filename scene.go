@@ -25,8 +25,8 @@ func NewScene(game *Game) *Scene {
 
 	scene := &Scene{
 		game,
-		WHITE,
-		BLACK,
+		White,
+		Black,
 		[]IEntity{},
 		tcell.StyleDefault,
 	}
