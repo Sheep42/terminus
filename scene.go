@@ -5,27 +5,23 @@ import (
 )
 
 type IScene interface {
-
 	Init()
-	Update( delta float64 )
+	Update(delta float64)
 	Draw()
 	Entities() []IEntity
-
 }
 
 type Scene struct {
-
 	game *Game
 
 	foreground tcell.Color
 	background tcell.Color
 
 	entities []IEntity
-	style tcell.Style
-
+	style    tcell.Style
 }
 
-func NewScene( game *Game ) *Scene {
+func NewScene(game *Game) *Scene {
 
 	scene := &Scene{
 		game,
@@ -39,7 +35,7 @@ func NewScene( game *Game ) *Scene {
 
 }
 
-func NewSceneCustom( game *Game, fg, bg tcell.Color ) *Scene {
+func NewSceneCustom(game *Game, fg, bg tcell.Color) *Scene {
 
 	scene := &Scene{
 		game,
@@ -53,24 +49,24 @@ func NewSceneCustom( game *Game, fg, bg tcell.Color ) *Scene {
 
 }
 
-func ( scene *Scene ) Init() {
+func (scene *Scene) Init() {
 
 	screen := scene.game.screen
 
-	screen_style := tcell.StyleDefault.
-		Foreground( scene.foreground ).
-		Background( scene.background )
+	screenStyle := tcell.StyleDefault.
+		Foreground(scene.foreground).
+		Background(scene.background)
 
-	screen.SetStyle( screen_style )
-	scene.style = screen_style
+	screen.SetStyle(screenStyle)
+	scene.style = screenStyle
 
 }
 
-func ( scene *Scene ) Update( delta float64 ) { }
+func (scene *Scene) Update(delta float64) {}
 
-func ( scene *Scene ) Draw() {
+func (scene *Scene) Draw() {
 
-	if len( scene.entities ) > 0 {
+	if len(scene.entities) > 0 {
 
 		for _, entity := range scene.entities {
 			entity.Draw()
@@ -80,19 +76,19 @@ func ( scene *Scene ) Draw() {
 
 }
 
-func ( scene *Scene ) Add(entity IEntity) {
+func (scene *Scene) Add(entity IEntity) {
 
-	entity.AddEntityToScene( scene )
-	scene.entities = append( scene.entities, entity )
+	entity.AddEntityToScene(scene)
+	scene.entities = append(scene.entities, entity)
 
 }
 
-func ( scene *Scene ) Game() *Game {
+func (scene *Scene) Game() *Game {
 
 	return scene.game
 
 }
 
-func ( scene *Scene ) Entities() []IEntity {
+func (scene *Scene) Entities() []IEntity {
 	return scene.entities
 }

@@ -1,47 +1,45 @@
 package terminus
 
 type Text struct {
-
 	*Entity
 	text string
-
 }
 
-func NewText( x, y int, text string ) *Text {
+func NewText(x, y int, text string) *Text {
 
-	t := &Text {
+	t := &Text{
 		Entity: NewEntity(x, y),
-		text: text,
+		text:   text,
 	}
 
 	return t
 
 }
 
-func ( text *Text ) Init() {
+func (text *Text) Init() {
 	text.Entity.Init() // super
 }
 
-func ( text *Text ) Update( delta float64 ) { 
-	text.Entity.Update( delta ) // super
+func (text *Text) Update(delta float64) {
+	text.Entity.Update(delta) // super
 }
 
-func ( text *Text ) Draw() {
+func (text *Text) Draw() {
 
-	// override Entity.Draw 
+	// override Entity.Draw
 	screen := text.Entity.game.screen
 	style := text.Entity.scene.style
 
 	for index, char := range text.text {
-		screen.SetContent( text.x + index, text.y, rune(char), nil, style )
+		screen.SetContent(text.x+index, text.y, rune(char), nil, style)
 	}
-	
+
 }
 
-func ( text *Text ) SetText( new_text string ) {
-	text.text = new_text
+func (text *Text) SetText(newText string) {
+	text.text = newText
 }
 
-func ( text *Text ) GetText() string {
+func (text *Text) GetText() string {
 	return text.text
 }
