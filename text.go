@@ -1,9 +1,15 @@
 package terminus
 
-// Text is a type of Entity which is used
+// IText is the interface through which custom
+// implementations of Text can be created
+type IText interface {
+	ToEntities(text string) []IEntity
+}
+
+// Text is a type of EntityGroup which is used
 // to render text to the game screen
 type Text struct {
-	*Entity
+	*EntityGroup
 	text string
 }
 
@@ -11,45 +17,44 @@ type Text struct {
 // value and creates a new Text Entity on the screen
 func NewText(x, y int, text string) *Text {
 
+	entities := ToEntities(text)
+
 	t := &Text{
-		Entity: NewEntity(x, y),
-		text:   text,
+		EntityGroup: NewEntityGroup(x, y, len(text), 1, entities),
+		text:        text,
 	}
 
 	return t
 
 }
 
-// Init fires during game.Init and can be overridden
-func (text *Text) Init() {
-	text.Entity.Init() // super
-}
+// ToEntities returns a slice of entities
+// representing a given string of text
+func ToEntities(text string) []IEntity {
 
-// Update fires after the scene update on each pass
-// through the game loop, and can be overridden
-func (text *Text) Update(delta float64) {
-	text.Entity.Update(delta) // super
-}
+	entities := []IEntity{}
 
-// Draw fires during scene.Draw and can be overridden
-func (text *Text) Draw() {
-
-	// override Entity.Draw
-	screen := text.Entity.game.screen
-	style := text.Entity.scene.style
-
-	for index, char := range text.text {
-		screen.SetContent(text.x+index, text.y, rune(char), nil, style)
+	for index, char := range text {
+		// 0,0 starts from top left of the
+		// EntityGroup
+		entities = append(entities, NewSpriteEntity(index, 0, rune(char)))
 	}
 
+	return entities
 }
 
 // SetText sets the text value of the Text Entity
-func (text *Text) SetText(newText string) {
-	text.text = newText
+func (t *Text) SetText(newText string) {
+	t.text = newText
 }
 
 // GetText gets the text value of the Text Entity
-func (text *Text) GetText() string {
-	return text.text
+func (t *Text) GetText() string {
+	return t.text
+}
+
+// GetEntityGroup gets the EntityGroup that contain
+// the Text Entities
+func (t *Text) GetEntityGroup() *EntityGroup {
+	return t.EntityGroup
 }

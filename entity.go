@@ -7,6 +7,7 @@ type IEntity interface {
 	Update(delta float64)
 	Draw()
 	AddEntityToScene(scene *Scene)
+	GetEntity() *Entity
 }
 
 // Entity represents a simple entity to be rendered
@@ -66,6 +67,11 @@ func (entity *Entity) Draw() {
 		screen.SetContent(entity.x, entity.y, entity.sprite, nil, style)
 	}
 
+}
+
+// GetEntity returns the entity in question
+func (entity *Entity) GetEntity() *Entity {
+	return entity
 }
 
 // AddEntityToScene adds the Entity to the given scene
