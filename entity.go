@@ -144,3 +144,65 @@ func (entity *Entity) SetSprite(sprite rune) {
 func (entity *Entity) GetSprite() rune {
 	return entity.sprite
 }
+
+// SetColor changes the entity's style foreground and
+// background colors
+func (entity *Entity) SetColor(fg, bg tcell.Color) {
+
+	style := tcell.StyleDefault.
+		Foreground(fg).
+		Background(bg)
+
+	entity.style = &style
+
+}
+
+// Overlaps checks if the entity overlaps the target
+// entity
+func (entity *Entity) Overlaps(target IEntity) bool {
+	return entity.x == target.GetEntity().x && entity.y == target.GetEntity().y
+}
+
+// OverlapsPoint checks if the entity overlaps the
+// specified screen point
+func (entity *Entity) OverlapsPoint(x, y int) bool {
+	return entity.x == x && entity.y == y
+}
+
+// CheckDir checks if the entity is the specified
+// distance away from the target point
+func (entity *Entity) CheckDir(axis rune, distance, point int) bool {
+
+	if axis == 'x' {
+		return (entity.x + distance) == point
+	} else if axis == 'y' {
+		return (entity.y + distance) == point
+	}
+
+	return false
+
+}
+
+// IsLeftOf checks if the entity is directly to the
+// left of the target entity
+func (entity *Entity) IsLeftOf(target IEntity) bool {
+	return entity.y == target.GetEntity().y && entity.CheckDir('x', 1, target.GetEntity().x)
+}
+
+// IsRightOf checks if the entity is directly to the
+// right of the target entity
+func (entity *Entity) IsRightOf(target IEntity) bool {
+	return entity.y == target.GetEntity().y && entity.CheckDir('x', -1, target.GetEntity().x)
+}
+
+// IsAbove checks if the entity is directly above
+// the target entity
+func (entity *Entity) IsAbove(target IEntity) bool {
+	return entity.x == target.GetEntity().x && entity.CheckDir('y', 1, target.GetEntity().y)
+}
+
+// IsBelow checks if the entity is directly below
+// the target entity
+func (entity *Entity) IsBelow(target IEntity) bool {
+	return entity.x == target.GetEntity().x && entity.CheckDir('y', -1, target.GetEntity().y)
+}
