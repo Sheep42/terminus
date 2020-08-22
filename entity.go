@@ -1,5 +1,9 @@
 package terminus
 
+import (
+	"github.com/gdamore/tcell"
+)
+
 // IEntity is the interface through which custom
 // implementations of Entity can be created
 type IEntity interface {
@@ -19,6 +23,8 @@ type Entity struct {
 	x      int
 	y      int
 	sprite rune
+
+	style *tcell.Style
 }
 
 // NewEntity takes an x position and a y position and
@@ -36,12 +42,22 @@ func NewEntity(x, y int) *Entity {
 
 // NewSpriteEntity takes an x position, a y position, and a rune
 // to be used as a visual representation, and creates an Entity
-func NewSpriteEntity(x, y int, sprite rune) *Entity {
+// colors: optional - foreground, background required if used
+func NewSpriteEntity(x, y int, sprite rune, colors ...tcell.Color) *Entity {
+
+	var style tcell.Style
+
+	if len(colors) == 2 {
+		style = tcell.StyleDefault.
+			Foreground(colors[0]).
+			Background(colors[1])
+	}
 
 	entity := &Entity{
 		x:      x,
 		y:      y,
 		sprite: sprite,
+		style:  &style,
 	}
 
 	return entity
@@ -61,7 +77,14 @@ func (entity *Entity) Update(delta float64) {}
 func (entity *Entity) Draw() {
 
 	screen := entity.game.screen
-	style := entity.scene.style
+
+	var style tcell.Style
+
+	if entity.style != nil {
+		style = *entity.style
+	} else {
+		style = entity.scene.style
+	}
 
 	if 0 != entity.sprite {
 		screen.SetContent(entity.x, entity.y, entity.sprite, nil, style)
