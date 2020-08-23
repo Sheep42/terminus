@@ -17,6 +17,7 @@ type Game struct {
 	exitKey      tcell.Key
 	input        *tcell.EventKey
 	chanKeyPress chan *tcell.EventKey
+	fps          float64
 }
 
 // NewGame creates a game
@@ -40,6 +41,10 @@ func (game *Game) Init(scenes []IScene) {
 
 	game.sceneIndex = 0
 	game.scenes = scenes
+
+	if game.fps == 0 {
+		game.fps = 60
+	}
 
 	game.screen.Init()
 	game.scenes[game.sceneIndex].Init()
@@ -135,6 +140,11 @@ game_loop:
 		scene.Draw()
 		screen.Show()
 
+		// enforce fps
+		select {
+		case <-time.After(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/game.fps) * time.Millisecond):
+			continue
+		}
 	}
 
 }
@@ -171,6 +181,16 @@ func (game *Game) ExitKey() tcell.Key {
 // SetExitKey sets the game's exit key
 func (game *Game) SetExitKey(exitKey tcell.Key) {
 	game.exitKey = exitKey
+}
+
+// GetFPS gets the game's target FPS
+func (game *Game) GetFPS() float64 {
+	return game.fps
+}
+
+// SetFPS sets the game's target FPS
+func (game *Game) SetFPS(fps float64) {
+	game.fps = fps
 }
 
 // Input gets the current input as an EventKey
