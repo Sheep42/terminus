@@ -1,10 +1,14 @@
 package terminus
 
 import (
+	"os"
 	"time"
 
 	"github.com/gdamore/tcell"
 )
+
+// TODO: Implement Logging
+// TODO: Implement Debug Mode
 
 // Game is collection of properties used to
 // abstract interaction with a tcell Screen
@@ -33,8 +37,11 @@ func NewGame() *Game {
 // before the loop is started
 func (game *Game) Init(scenes []IScene) {
 
-	// TODO: Error checking
-	screen, _ := tcell.NewScreen()
+	screen, err := tcell.NewScreen()
+	if err != nil {
+		// TODO: Log error
+		os.Exit(2)
+	}
 
 	game.screen = screen
 	game.exitKey = KeyEsc
