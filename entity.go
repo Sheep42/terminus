@@ -185,8 +185,14 @@ func (entity *Entity) SetColor(fg, bg tcell.Color) {
 // position is reset
 func (entity *Entity) Collide(target IEntity) {
 
-	if entity.Overlaps(target) {
-		entity.x, entity.y = entity.lastX, entity.lastY
+	// TODO: Impolement EntityGroup collision
+	switch target.(type) {
+	case *Entity:
+		if entity.Overlaps(target) {
+			entity.x, entity.y = entity.lastX, entity.lastY
+		}
+	case *EntityGroup:
+	default:
 	}
 
 }
