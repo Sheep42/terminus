@@ -22,6 +22,8 @@ type Entity struct {
 
 	x      int
 	y      int
+	lastX  int
+	lastY  int
 	sprite rune
 
 	style *tcell.Style
@@ -115,24 +117,45 @@ func (entity *Entity) GetGame() *Game {
 	return entity.game
 }
 
-// SetX sets the x position of the Entity
-func (entity *Entity) SetX(x int) {
-	entity.x = x
-}
-
 // GetX gets the current x position of the Entity
 func (entity *Entity) GetX() int {
 	return entity.x
 }
 
-// SetY sets the y position of the Entity
-func (entity *Entity) SetY(y int) {
-	entity.y = y
-}
-
 // GetY gets the current y position of the Entity
 func (entity *Entity) GetY() int {
 	return entity.y
+}
+
+// GetLastX returns the entity's previous
+// x position
+func (entity *Entity) GetLastX() int {
+	return entity.lastX
+}
+
+// GetLastY returns the entity's previous
+// y position
+func (entity *Entity) GetLastY() int {
+	return entity.lastY
+}
+
+// SetPosition sets the entity's x and y position
+// simultaneously
+func (entity *Entity) SetPosition(x, y int) {
+	entity.lastX, entity.lastY = entity.x, entity.y
+	entity.x, entity.y = x, y
+}
+
+// GetPosition returns the entity's current x and y
+// position
+func (entity *Entity) GetPosition() (int, int) {
+	return entity.x, entity.y
+}
+
+// GetLastPosition returns the entity's previous x
+// and y position
+func (entity *Entity) GetLastPosition() (int, int) {
+	return entity.lastX, entity.lastY
 }
 
 // SetSprite sets the Entity's sprite rune
@@ -154,6 +177,17 @@ func (entity *Entity) SetColor(fg, bg tcell.Color) {
 		Background(bg)
 
 	entity.style = &style
+
+}
+
+// Collide implements simple entity collision. If
+// the entity collides with the target, the entity's
+// position is reset
+func (entity *Entity) Collide(target IEntity) {
+
+	if entity.Overlaps(target) {
+		entity.x, entity.y = entity.lastX, entity.lastY
+	}
 
 }
 
