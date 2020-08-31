@@ -10,6 +10,7 @@ type IEntity interface {
 	Init()
 	Update(delta float64)
 	Draw()
+	Collide(target IEntity)
 	AddEntityToScene(scene *Scene)
 	GetEntity() *Entity
 }
@@ -181,18 +182,15 @@ func (entity *Entity) SetColor(fg, bg tcell.Color) {
 }
 
 // Collide implements simple entity collision. If
-// the entity collides with the target, the entity's
-// position is reset
+// the target collides with the entity, the target's
+// position is reset - This happens after an overlap
+// occurs
 func (entity *Entity) Collide(target IEntity) {
 
-	// TODO: Impolement EntityGroup collision
-	switch target.(type) {
-	case *Entity:
-		if entity.Overlaps(target) {
-			entity.x, entity.y = entity.lastX, entity.lastY
-		}
-	case *EntityGroup:
-	default:
+	te := target.GetEntity()
+
+	if te.Overlaps(entity) {
+		te.x, te.y = te.lastX, te.lastY
 	}
 
 }

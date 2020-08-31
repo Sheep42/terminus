@@ -60,7 +60,28 @@ func (eg *EntityGroup) Draw() {
 
 }
 
-// GetEntity returns the first entity in the group
+// Collide implements simple entity collision. If
+// the target collides with the entity, the target's
+// position is reset - This happens after an overlap
+// occurs
+func (eg *EntityGroup) Collide(target IEntity) {
+
+	te := target.GetEntity()
+
+	for i := eg.x; i <= (eg.x + eg.width); i++ {
+		for j := eg.y; j <= (eg.y + eg.height); j++ {
+
+			if te.OverlapsPoint(i, j) {
+				te.x, te.y = te.lastX, te.lastY
+			}
+
+		}
+	}
+
+}
+
+// GetEntity returns the entity used for positioning
+// the group
 func (eg *EntityGroup) GetEntity() *Entity {
 	return eg.Entity
 }
