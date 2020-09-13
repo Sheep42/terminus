@@ -28,6 +28,12 @@ func NewText(x, y int, text string) *Text {
 
 }
 
+// Update fires after the scene update on each pass
+// through the game loop, and can be overridden
+func (t *Text) Update(delta float64) {
+	t.EntityGroup.Update(delta) // super
+}
+
 // ToEntities returns a slice of entities
 // representing a given string of text
 func ToEntities(text string) []IEntity {
@@ -45,7 +51,11 @@ func ToEntities(text string) []IEntity {
 
 // SetText sets the text value of the Text Entity
 func (t *Text) SetText(newText string) {
+
 	t.text = newText
+	t.entities = ToEntities(newText)
+	t.EntityGroup.SetWidth(len(newText))
+
 }
 
 // GetText gets the text value of the Text Entity
