@@ -1,14 +1,13 @@
 package terminus
 
 import (
+	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/gdamore/tcell"
 )
-
-// TODO: Implement Logging
-// TODO: Implement Debug Mode
 
 // Game is collection of properties used to
 // abstract interaction with a tcell Screen
@@ -22,6 +21,9 @@ type Game struct {
 	input        *tcell.EventKey
 	chanKeyPress chan *tcell.EventKey
 	fps          float64
+	logger       *log.Logger
+	logFile      *os.File
+	logFileName  string
 }
 
 // NewGame creates a game
@@ -37,14 +39,31 @@ func NewGame() *Game {
 // before the loop is started
 func (game *Game) Init(scenes []IScene) {
 
+	game.exitKey = KeyEsc
+	game.logger = log.New(os.Stderr, "", log.Ldate|log.Ltime|log.LUTC|log.Lshortfile)
+
+	if game.logFileName == "" {
+		game.logFileName = "terminus.log"
+	}
+
+	baseDir, err := filepath.Abs(filepath.Dir(os.Args[0])) // baseDir = game directory
+	if err != nil {
+		game.logger.Fatal("Error getting baseDir: ", err)
+	}
+
+	game.logFile, err = os.OpenFile(baseDir+"/"+game.logFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		game.logger.Fatal("Error opening log file: ", err)
+	}
+
+	game.logger.SetOutput(game.logFile)
+
 	screen, err := tcell.NewScreen()
 	if err != nil {
-		// TODO: Log error
-		os.Exit(2)
+		game.logger.Fatal("Error creating screen: ", err)
 	}
 
 	game.screen = screen
-	game.exitKey = KeyEsc
 
 	game.sceneIndex = 0
 	game.scenes = scenes
@@ -66,6 +85,7 @@ func (game *Game) Init(scenes []IScene) {
 
 	game.chanKeyPress = make(chan *tcell.EventKey)
 
+	game.logger.Println("Game Init finished")
 }
 
 func (game *Game) getInput() {
@@ -109,6 +129,10 @@ func (game *Game) handleInput() {
 
 // Start begins listening for input and starts the game loop
 func (game *Game) Start() {
+
+	game.logger.Println("Game Start running...")
+
+	defer game.logFile.Close()
 
 	screen := game.screen
 	clock := time.Now()
@@ -154,6 +178,8 @@ game_loop:
 		}
 	}
 
+	game.logger.Println("Game loop exited")
+
 }
 
 // NextScene increments the game sceneIndex if
@@ -198,6 +224,18 @@ func (game *Game) GetFPS() float64 {
 // SetFPS sets the game's target FPS
 func (game *Game) SetFPS(fps float64) {
 	game.fps = fps
+}
+
+// GetLogger gets the game's logger for
+// use in your game
+func (game *Game) GetLogger() *log.Logger {
+	return game.logger
+}
+
+// SetLogFileName sets a custom log file name for
+// logger output. Default value is 'terminus.log'
+func (game *Game) SetLogFileName(filename string) {
+	game.logFileName = filename
 }
 
 // Input gets the current input as an EventKey
