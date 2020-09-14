@@ -24,6 +24,7 @@ type Game struct {
 	logger       *log.Logger
 	logFile      *os.File
 	logFileName  string
+	ticker       *time.Ticker
 }
 
 // NewGame creates a game
@@ -83,6 +84,7 @@ func (game *Game) Init(scenes []IScene) {
 
 	}
 
+	game.ticker = time.NewTicker(time.Duration(1000000/game.fps) * time.Microsecond)
 	game.chanKeyPress = make(chan *tcell.EventKey)
 
 	game.logger.Println("Game Init finished")
@@ -148,8 +150,6 @@ game_loop:
 		delta := update.Sub(clock).Seconds()
 		clock = update
 
-		screen.Clear()
-
 		game.handleInput()
 
 		if game.input != nil && game.input.Key() == game.exitKey {
@@ -169,11 +169,12 @@ game_loop:
 		}
 
 		scene.Draw()
-		screen.Show()
 
 		// enforce fps
 		select {
-		case <-time.After(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/game.fps) * time.Millisecond):
+		case <-game.ticker.C:
+			screen.Show()
+			screen.Clear()
 			continue
 		}
 	}
