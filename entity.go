@@ -195,6 +195,7 @@ func (entity *Entity) Collide(target IEntity) {
 
 	if te.Overlaps(entity) {
 		te.x, te.y = te.lastX, te.lastY
+		entity.scene.redraw = true
 	}
 
 }
