@@ -71,6 +71,7 @@ func (scene *Scene) Init() {
 
 	screen.SetStyle(screenStyle)
 	scene.style = screenStyle
+	scene.redraw = true
 
 }
 
