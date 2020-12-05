@@ -60,6 +60,22 @@ func (eg *EntityGroup) Draw() {
 
 }
 
+// AddEntityToScene adds the Entity to the given scene
+func (eg *EntityGroup) AddEntityToScene(scene *Scene) {
+
+	eg.Entity.game = scene.game
+	eg.Entity.scene = scene
+
+	for _, e := range eg.entities {
+
+		e.GetEntity().AddEntityToScene(scene)
+
+	}
+
+	scene.redraw = true
+
+}
+
 // Collide implements simple entity collision. If
 // the target collides with the entity, the target's
 // position is reset - This happens after an overlap
@@ -95,15 +111,35 @@ func (eg *EntityGroup) GetEntities() []IEntity {
 // SetWidth sets the width of the EntityGroup
 func (eg *EntityGroup) SetWidth(width int) {
 	eg.width = width
+	eg.scene.redraw = true
 }
 
 // SetHeight sets the height of the EntityGroup
 func (eg *EntityGroup) SetHeight(height int) {
 	eg.height = height
+	eg.scene.redraw = true
 }
 
 // GetDimensions returns the width and height
 // of the EntityGroup
 func (eg *EntityGroup) GetDimensions() (int, int) {
 	return eg.width, eg.height
+}
+
+// SetEntities sets the EntityGroup's child entities
+// and re-adds the entities to the parent's scene
+func (eg *EntityGroup) SetEntities(entities []IEntity) {
+
+	eg.entities = entities
+
+	if nil != eg.scene {
+
+		for _, e := range eg.entities {
+
+			e.GetEntity().AddEntityToScene(eg.scene)
+
+		}
+
+	}
+
 }

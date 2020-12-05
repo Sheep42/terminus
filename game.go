@@ -168,13 +168,10 @@ game_loop:
 
 		}
 
-		scene.Draw()
-
 		// enforce fps
 		select {
 		case <-game.ticker.C:
-			screen.Show()
-			screen.Clear()
+			scene.Draw()
 			continue
 		}
 	}

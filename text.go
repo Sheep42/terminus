@@ -53,8 +53,9 @@ func ToEntities(text string) []IEntity {
 func (t *Text) SetText(newText string) {
 
 	t.text = newText
-	t.entities = ToEntities(newText)
+	t.SetEntities(ToEntities(newText))
 	t.EntityGroup.SetWidth(len(newText))
+	t.scene.redraw = true
 
 }
 

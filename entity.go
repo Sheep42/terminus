@@ -105,6 +105,7 @@ func (entity *Entity) AddEntityToScene(scene *Scene) {
 
 	entity.game = scene.game
 	entity.scene = scene
+	scene.redraw = true
 
 }
 
@@ -145,6 +146,7 @@ func (entity *Entity) GetLastY() int {
 func (entity *Entity) SetPosition(x, y int) {
 	entity.lastX, entity.lastY = entity.x, entity.y
 	entity.x, entity.y = x, y
+	entity.scene.redraw = true
 }
 
 // GetPosition returns the entity's current x and y
@@ -162,6 +164,7 @@ func (entity *Entity) GetLastPosition() (int, int) {
 // SetSprite sets the Entity's sprite rune
 func (entity *Entity) SetSprite(sprite rune) {
 	entity.sprite = sprite
+	entity.scene.redraw = true
 }
 
 // GetSprite returns the rune that represents the Entity
@@ -178,6 +181,7 @@ func (entity *Entity) SetColor(fg, bg tcell.Color) {
 		Background(bg)
 
 	entity.style = &style
+	entity.scene.redraw = true
 
 }
 

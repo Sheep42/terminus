@@ -24,6 +24,7 @@ type Scene struct {
 
 	entities []IEntity
 	style    tcell.Style
+	redraw   bool
 }
 
 // NewScene creates a new Scene to be used by a Game
@@ -35,6 +36,7 @@ func NewScene(game *Game) *Scene {
 		Black,
 		[]IEntity{},
 		tcell.StyleDefault,
+		true,
 	}
 
 	return scene
@@ -51,6 +53,7 @@ func NewSceneCustom(game *Game, fg, bg tcell.Color) *Scene {
 		bg,
 		[]IEntity{},
 		tcell.StyleDefault,
+		true,
 	}
 
 	return scene
@@ -80,6 +83,13 @@ func (scene *Scene) Update(delta float64) {}
 // the game loop. It can be overridden
 func (scene *Scene) Draw() {
 
+	// only redraw when changes are tracked
+	if false == scene.redraw {
+		return
+	}
+
+	game := scene.game
+
 	if len(scene.entities) > 0 {
 
 		for _, entity := range scene.entities {
@@ -87,6 +97,11 @@ func (scene *Scene) Draw() {
 		}
 
 	}
+
+	game.screen.Show()
+	game.screen.Clear()
+
+	scene.redraw = false
 
 }
 
@@ -110,5 +125,15 @@ func (scene *Scene) Game() *Game {
 // Entities returns the slice containing all entities
 // in the scene
 func (scene *Scene) Entities() []IEntity {
+
 	return scene.entities
+
+}
+
+// SetRedraw allows you to tell a specific scene to
+// redraw (true) or not (false) on the next frame
+func (scene Scene) SetRedraw(redraw bool) {
+
+	scene.redraw = redraw
+
 }
