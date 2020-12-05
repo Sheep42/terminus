@@ -89,6 +89,7 @@ func (eg *EntityGroup) Collide(target IEntity) {
 
 			if te.OverlapsPoint(i, j) {
 				te.x, te.y = te.lastX, te.lastY
+				eg.scene.redraw = true
 			}
 
 		}

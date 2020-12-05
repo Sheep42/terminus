@@ -73,6 +73,12 @@ func (game *Game) Init(scenes []IScene) {
 		game.fps = 60
 	}
 
+	for _, s := range game.scenes {
+
+		s.Setup()
+
+	}
+
 	game.screen.Init()
 	game.scenes[game.sceneIndex].Init()
 

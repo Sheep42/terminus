@@ -7,6 +7,7 @@ import (
 // IScene is the interface through which custom
 // implementations of scene can be created
 type IScene interface {
+	Setup()
 	Init()
 	Update(delta float64)
 	Draw()
@@ -36,7 +37,7 @@ func NewScene(game *Game) *Scene {
 		Black,
 		[]IEntity{},
 		tcell.StyleDefault,
-		true,
+		false,
 	}
 
 	return scene
@@ -53,14 +54,18 @@ func NewSceneCustom(game *Game, fg, bg tcell.Color) *Scene {
 		bg,
 		[]IEntity{},
 		tcell.StyleDefault,
-		true,
+		false,
 	}
 
 	return scene
 
 }
 
-// Init fires during game.Init and can be overridden
+// Setup fires ONLY during game.Init and it can be overridden
+func (scene *Scene) Setup() {}
+
+// Init fires during game.Init and when the scene is first
+// entered. It can be overridden
 func (scene *Scene) Init() {
 
 	screen := scene.game.screen
@@ -85,7 +90,7 @@ func (scene *Scene) Update(delta float64) {}
 func (scene *Scene) Draw() {
 
 	// only redraw when changes are tracked
-	if false == scene.redraw {
+	if true != scene.redraw {
 		return
 	}
 
@@ -113,6 +118,7 @@ func (scene *Scene) Add(entity IEntity) {
 
 	entity.AddEntityToScene(scene)
 	scene.entities = append(scene.entities, entity)
+	scene.redraw = true
 
 }
 
@@ -133,6 +139,8 @@ func (scene *Scene) Remove(entity IEntity) {
 
 	}
 
+	scene.redraw = true
+
 }
 
 // Game returns the Game associated with the scene
@@ -152,7 +160,7 @@ func (scene *Scene) Entities() []IEntity {
 
 // SetRedraw allows you to tell a specific scene to
 // redraw (true) or not (false) on the next frame
-func (scene Scene) SetRedraw(redraw bool) {
+func (scene *Scene) SetRedraw(redraw bool) {
 
 	scene.redraw = redraw
 
