@@ -115,6 +115,25 @@ func (scene *Scene) Add(entity IEntity) {
 
 }
 
+// Remove removes the given entity from the scene. This preserves
+// previous entity order
+func (scene *Scene) Remove(entity IEntity) {
+
+	for i, e := range scene.entities {
+
+		if e.GetEntity() == entity.GetEntity() {
+
+			copy(scene.entities[i:], scene.entities[i+1:])
+			scene.entities[len(scene.entities)-1] = nil
+			scene.entities = scene.entities[:len(scene.entities)-1]
+			break
+
+		}
+
+	}
+
+}
+
 // Game returns the Game associated with the scene
 func (scene *Scene) Game() *Game {
 
