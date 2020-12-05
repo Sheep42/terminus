@@ -76,7 +76,11 @@ func (scene *Scene) Init() {
 
 	screen.SetStyle(screenStyle)
 	scene.style = screenStyle
-	scene.redraw = true
+
+	// 2 passes through Draw are necessary during a
+	// scene switch, so I'm just forcing it
+	scene.drawScene()
+	scene.drawScene()
 
 }
 
@@ -94,20 +98,28 @@ func (scene *Scene) Draw() {
 		return
 	}
 
+	scene.drawScene()
+
+	scene.redraw = false
+
+}
+
+func (scene *Scene) drawScene() {
+
 	game := scene.game
 
 	if len(scene.entities) > 0 {
 
 		for _, entity := range scene.entities {
+
 			entity.Draw()
+
 		}
 
 	}
 
 	game.screen.Show()
 	game.screen.Clear()
-
-	scene.redraw = false
 
 }
 
