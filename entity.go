@@ -80,13 +80,15 @@ func (entity *Entity) Update(delta float64) {}
 func (entity *Entity) Draw() {
 
 	screen := entity.game.screen
+	game := entity.game
+	currentScene := game.CurrentScene()
 
 	var style tcell.Style
 
 	if entity.style != nil {
 		style = *entity.style
 	} else {
-		style = entity.scene.style
+		style = currentScene.style
 	}
 
 	if 0 != entity.sprite {

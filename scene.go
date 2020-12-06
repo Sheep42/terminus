@@ -12,6 +12,7 @@ type IScene interface {
 	Update(delta float64)
 	Draw()
 	Entities() []IEntity
+	GetScene() *Scene
 }
 
 // Scene is an abstraction and expansion of the
@@ -167,6 +168,13 @@ func (scene *Scene) Game() *Game {
 func (scene *Scene) Entities() []IEntity {
 
 	return scene.entities
+
+}
+
+// GetScene returns the Scene for a given IScene
+func (scene *Scene) GetScene() *Scene {
+
+	return scene
 
 }
 

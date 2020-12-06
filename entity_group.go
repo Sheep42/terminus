@@ -36,7 +36,15 @@ func (eg *EntityGroup) Draw() {
 
 	// override Entity.Draw
 	screen := eg.Entity.game.screen
-	style := eg.Entity.scene.style
+	currentScene := eg.game.CurrentScene()
+
+	var style tcell.Style
+
+	if eg.style != nil {
+		style = *eg.style
+	} else {
+		style = currentScene.style
+	}
 
 	for _, eInterface := range eg.entities {
 

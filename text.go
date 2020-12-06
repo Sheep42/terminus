@@ -1,5 +1,7 @@
 package terminus
 
+import "github.com/gdamore/tcell"
+
 // IText is the interface through which custom
 // implementations of Text can be created
 type IText interface {
@@ -10,18 +12,20 @@ type IText interface {
 // to render text to the game screen
 type Text struct {
 	*EntityGroup
-	text string
+	text   string
+	colors []tcell.Color
 }
 
 // NewText takes an x position, y position, and text
 // value and creates a new Text Entity on the screen
-func NewText(x, y int, text string) *Text {
+func NewText(x, y int, text string, colors ...tcell.Color) *Text {
 
-	entities := ToEntities(text)
+	entities := ToEntities(text, colors)
 
 	t := &Text{
 		EntityGroup: NewEntityGroup(x, y, len(text), 1, entities),
 		text:        text,
+		colors:      colors,
 	}
 
 	return t
@@ -36,14 +40,14 @@ func (t *Text) Update(delta float64) {
 
 // ToEntities returns a slice of entities
 // representing a given string of text
-func ToEntities(text string) []IEntity {
+func ToEntities(text string, colors []tcell.Color) []IEntity {
 
 	entities := []IEntity{}
 
 	for index, char := range text {
 		// 0,0 starts from top left of the
 		// EntityGroup
-		entities = append(entities, NewSpriteEntity(index, 0, rune(char)))
+		entities = append(entities, NewSpriteEntity(index, 0, rune(char), colors...))
 	}
 
 	return entities
@@ -53,7 +57,7 @@ func ToEntities(text string) []IEntity {
 func (t *Text) SetText(newText string) {
 
 	t.text = newText
-	t.SetEntities(ToEntities(newText))
+	t.SetEntities(ToEntities(newText, t.colors))
 	t.EntityGroup.SetWidth(len(newText))
 	t.scene.redraw = true
 

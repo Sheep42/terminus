@@ -253,3 +253,10 @@ func (game *Game) ScreenSize() (int, int) {
 	return game.width, game.height
 
 }
+
+// CurrentScene returns the game's current Scene
+func (game *Game) CurrentScene() *Scene {
+
+	return game.scenes[game.sceneIndex].GetScene()
+
+}
