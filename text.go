@@ -12,20 +12,18 @@ type IText interface {
 // to render text to the game screen
 type Text struct {
 	*EntityGroup
-	text   string
-	colors []tcell.Color
+	text string
 }
 
 // NewText takes an x position, y position, and text
 // value and creates a new Text Entity on the screen
 func NewText(x, y int, text string, colors ...tcell.Color) *Text {
 
-	entities := ToEntities(text, colors)
+	entities := ToEntities(text)
 
 	t := &Text{
 		EntityGroup: NewEntityGroup(x, y, len(text), 1, entities, colors...),
 		text:        text,
-		colors:      colors,
 	}
 
 	return t
@@ -40,14 +38,14 @@ func (t *Text) Update(delta float64) {
 
 // ToEntities returns a slice of entities
 // representing a given string of text
-func ToEntities(text string, colors []tcell.Color) []IEntity {
+func ToEntities(text string) []IEntity {
 
 	entities := []IEntity{}
 
 	for index, char := range text {
 		// 0,0 starts from top left of the
 		// EntityGroup
-		entities = append(entities, NewSpriteEntity(index, 0, rune(char), colors...))
+		entities = append(entities, NewSpriteEntity(index, 0, rune(char)))
 	}
 
 	return entities
@@ -57,7 +55,7 @@ func ToEntities(text string, colors []tcell.Color) []IEntity {
 func (t *Text) SetText(newText string) {
 
 	t.text = newText
-	t.SetEntities(ToEntities(newText, t.colors))
+	t.SetEntities(ToEntities(newText))
 	t.EntityGroup.SetWidth(len(newText))
 	t.scene.redraw = true
 

@@ -10,27 +10,20 @@ type EntityGroup struct {
 	width    int
 	height   int
 	entities []IEntity
-	style    *tcell.Style
+	colors   []tcell.Color
 }
 
 // NewEntityGroup creates a new EntityGroup
 func NewEntityGroup(x, y, width, height int, entities []IEntity, colors ...tcell.Color) *EntityGroup {
-
-	var style tcell.Style
-
-	if len(colors) == 2 {
-		style = tcell.StyleDefault.
-			Foreground(colors[0]).
-			Background(colors[1])
-	}
 
 	return &EntityGroup{
 		Entity:   NewEntity(x, y),
 		width:    width,
 		height:   height,
 		entities: entities,
-		style:    &style,
+		colors:   colors,
 	}
+
 }
 
 // Init fires during game.Init and can be overridden
@@ -53,10 +46,16 @@ func (eg *EntityGroup) Draw() {
 
 	var style tcell.Style
 
-	if eg.style != nil {
-		style = *eg.style
+	if len(eg.colors) == 2 {
+
+		style = tcell.StyleDefault.
+			Foreground(eg.colors[0]).
+			Background(eg.colors[1])
+
 	} else {
+
 		style = currentScene.style
+
 	}
 
 	for _, eInterface := range eg.entities {
