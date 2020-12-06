@@ -26,9 +26,22 @@ func NewCustomScene(g *t.Game, fg, bg tcell.Color, title string) *CustomScene {
 
 func (cs *CustomScene) Setup() {
 
-	cs.Scene.Init() // super
+	cs.Scene.Setup() // super
 
 	cs.Add(cs.title)
+
+}
+
+func (cs *CustomScene) Init() {
+
+	cs.Scene.Init()
+
+	game := cs.Game()
+
+	screenWidth, screenHeight := game.ScreenSize()
+	textWidth, textHeight := cs.title.GetDimensions()
+
+	cs.title.SetPosition(screenWidth/2-textWidth/2, screenHeight/2-textHeight/2)
 
 }
 
@@ -37,16 +50,6 @@ func (cs *CustomScene) Update(delta float64) {
 	// Use z and x to cycle through scenes
 	game := cs.Game()
 	input := game.Input()
-
-	// Center the scene title
-	if 0 == cs.title.GetX() {
-
-		screenWidth, screenHeight := game.ScreenSize()
-		textWidth, textHeight := cs.title.GetDimensions()
-
-		cs.title.SetPosition(screenWidth/2-textWidth/2, screenHeight/2-textHeight/2)
-
-	}
 
 	if nil != input {
 
