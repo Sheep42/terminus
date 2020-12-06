@@ -23,7 +23,7 @@ func NewText(x, y int, text string, colors ...tcell.Color) *Text {
 	entities := ToEntities(text, colors)
 
 	t := &Text{
-		EntityGroup: NewEntityGroup(x, y, len(text), 1, entities),
+		EntityGroup: NewEntityGroup(x, y, len(text), 1, entities, colors...),
 		text:        text,
 		colors:      colors,
 	}

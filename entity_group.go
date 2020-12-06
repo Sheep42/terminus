@@ -1,5 +1,7 @@
 package terminus
 
+import "github.com/gdamore/tcell"
+
 // EntityGroup represents a set of entities that
 // are grouped together within a specified boundary
 type EntityGroup struct {
@@ -8,15 +10,26 @@ type EntityGroup struct {
 	width    int
 	height   int
 	entities []IEntity
+	style    *tcell.Style
 }
 
 // NewEntityGroup creates a new EntityGroup
-func NewEntityGroup(x, y, width, height int, entities []IEntity) *EntityGroup {
+func NewEntityGroup(x, y, width, height int, entities []IEntity, colors ...tcell.Color) *EntityGroup {
+
+	var style tcell.Style
+
+	if len(colors) == 2 {
+		style = tcell.StyleDefault.
+			Foreground(colors[0]).
+			Background(colors[1])
+	}
+
 	return &EntityGroup{
 		Entity:   NewEntity(x, y),
 		width:    width,
 		height:   height,
 		entities: entities,
+		style:    &style,
 	}
 }
 
