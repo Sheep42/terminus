@@ -4,8 +4,6 @@ import (
 	t "terminus"
 
 	"github.com/gdamore/tcell"
-	// "strconv"
-	// "github.com/gdamore/tcell"
 )
 
 type CustomScene struct {
