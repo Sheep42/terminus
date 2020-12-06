@@ -16,7 +16,7 @@ func main() {
 	// The Entity's sprite will be @
 	s.Add(NewMoveable(6, 3, '@'))
 
-	// g.Init takes a slice of scenes
+	// g.Init takes a slice of IScenes
 	ss := []t.IScene{s}
 
 	// Init the Game
