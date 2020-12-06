@@ -109,8 +109,10 @@ func (game *Game) getInput() {
 		switch eventType := ev.(type) {
 
 		case *tcell.EventResize:
+
 			screen.Sync()
 			game.width, game.height = screen.Size()
+			game.scenes[game.sceneIndex].Init()
 
 		case *tcell.EventKey:
 			select {
