@@ -10,19 +10,21 @@ type EntityGroup struct {
 	width    int
 	height   int
 	entities []IEntity
-	colors   []tcell.Color
 }
 
 // NewEntityGroup creates a new EntityGroup
 func NewEntityGroup(x, y, width, height int, entities []IEntity, colors ...tcell.Color) *EntityGroup {
 
-	return &EntityGroup{
+	eg := &EntityGroup{
 		Entity:   NewEntity(x, y),
 		width:    width,
 		height:   height,
 		entities: entities,
-		colors:   colors,
 	}
+
+	eg.colors = colors
+
+	return eg
 
 }
 

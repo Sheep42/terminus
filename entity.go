@@ -27,7 +27,7 @@ type Entity struct {
 	lastY  int
 	sprite rune
 
-	style *tcell.Style
+	colors []tcell.Color
 }
 
 // NewEntity takes an x position and a y position and
@@ -48,19 +48,11 @@ func NewEntity(x, y int) *Entity {
 // colors: optional - foreground, background required if used
 func NewSpriteEntity(x, y int, sprite rune, colors ...tcell.Color) *Entity {
 
-	var style tcell.Style
-
-	if len(colors) == 2 {
-		style = tcell.StyleDefault.
-			Foreground(colors[0]).
-			Background(colors[1])
-	}
-
 	entity := &Entity{
 		x:      x,
 		y:      y,
 		sprite: sprite,
-		style:  &style,
+		colors: colors,
 	}
 
 	return entity
@@ -85,10 +77,16 @@ func (entity *Entity) Draw() {
 
 	var style tcell.Style
 
-	if entity.style != nil {
-		style = *entity.style
+	if len(entity.colors) == 2 {
+
+		style = tcell.StyleDefault.
+			Foreground(entity.colors[0]).
+			Background(entity.colors[1])
+
 	} else {
+
 		style = currentScene.style
+
 	}
 
 	if 0 != entity.sprite {
@@ -178,11 +176,7 @@ func (entity *Entity) GetSprite() rune {
 // background colors
 func (entity *Entity) SetColor(fg, bg tcell.Color) {
 
-	style := tcell.StyleDefault.
-		Foreground(fg).
-		Background(bg)
-
-	entity.style = &style
+	entity.colors = []tcell.Color{fg, bg}
 	entity.scene.redraw = true
 
 }
