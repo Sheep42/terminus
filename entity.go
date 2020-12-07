@@ -10,7 +10,6 @@ type IEntity interface {
 	Init()
 	Update(delta float64)
 	Draw()
-	Collide(target IEntity)
 	AddEntityToScene(scene *Scene)
 	GetEntity() *Entity
 }
@@ -23,8 +22,6 @@ type Entity struct {
 
 	x      int
 	y      int
-	lastX  int
-	lastY  int
 	sprite rune
 
 	colors []tcell.Color
@@ -129,22 +126,9 @@ func (entity *Entity) GetY() int {
 	return entity.y
 }
 
-// GetLastX returns the entity's previous
-// x position
-func (entity *Entity) GetLastX() int {
-	return entity.lastX
-}
-
-// GetLastY returns the entity's previous
-// y position
-func (entity *Entity) GetLastY() int {
-	return entity.lastY
-}
-
 // SetPosition sets the entity's x and y position
 // simultaneously
 func (entity *Entity) SetPosition(x, y int) {
-	entity.lastX, entity.lastY = entity.x, entity.y
 	entity.x, entity.y = x, y
 	entity.scene.redraw = true
 }
@@ -153,12 +137,6 @@ func (entity *Entity) SetPosition(x, y int) {
 // position
 func (entity *Entity) GetPosition() (int, int) {
 	return entity.x, entity.y
-}
-
-// GetLastPosition returns the entity's previous x
-// and y position
-func (entity *Entity) GetLastPosition() (int, int) {
-	return entity.lastX, entity.lastY
 }
 
 // SetSprite sets the Entity's sprite rune
@@ -178,21 +156,6 @@ func (entity *Entity) SetColor(fg, bg tcell.Color) {
 
 	entity.colors = []tcell.Color{fg, bg}
 	entity.scene.redraw = true
-
-}
-
-// Collide implements simple entity collision. If
-// the target collides with the entity, the target's
-// position is reset - This happens after an overlap
-// occurs
-func (entity *Entity) Collide(target IEntity) {
-
-	te := target.GetEntity()
-
-	if te.Overlaps(entity) {
-		te.x, te.y = te.lastX, te.lastY
-		entity.scene.redraw = true
-	}
 
 }
 
