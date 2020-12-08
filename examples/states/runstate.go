@@ -22,6 +22,8 @@ func (rs *RunState) OnEnter() {}
 func (rs *RunState) OnExit()  {}
 func (rs *RunState) Tick(delta float64) {
 
+	// Update the scene - when the scene is updated
+	// its child entities are also updated
 	rs.cs.Scene.Update(delta)
 
 	g := rs.cs.Game()
@@ -31,6 +33,7 @@ func (rs *RunState) Tick(delta float64) {
 
 		if 'p' == i.Rune() {
 
+			// change to the PauseState
 			rs.cs.stateManager.ChangeState(rs.cs.pauseState)
 
 		}

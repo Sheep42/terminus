@@ -38,6 +38,10 @@ func (ps *PauseState) OnExit() {
 
 func (ps *PauseState) Tick(delta float64) {
 
+	// Notice we removed the call to Scene Update()
+	// This will pause the game since no entities
+	// in the scene will be updated
+
 	g := ps.cs.Game()
 	i := g.Input()
 
@@ -45,6 +49,7 @@ func (ps *PauseState) Tick(delta float64) {
 
 		if 'p' == i.Rune() {
 
+			// Change to RunState
 			ps.cs.stateManager.ChangeState(ps.cs.runState)
 
 		}

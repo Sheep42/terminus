@@ -23,8 +23,11 @@ func NewCustomScene(g *t.Game, fg, bg tcell.Color) *CustomScene {
 		Scene: t.NewSceneCustom(g, fg, bg),
 	}
 
+	// define the States
 	cs.runState = NewRunState(cs)
 	cs.pauseState = NewPauseState(cs)
+
+	// create the StateManager, pass RunState as default
 	cs.stateManager = t.NewStateManager(cs.runState)
 
 	return cs
@@ -65,6 +68,7 @@ func (cs *CustomScene) Setup() {
 
 func (cs *CustomScene) Update(delta float64) {
 
+	// Run the StateManager
 	cs.stateManager.Update(delta)
 
 }
