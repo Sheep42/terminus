@@ -168,14 +168,6 @@ game_loop:
 		scene := game.scenes[game.sceneIndex]
 		scene.Update(delta)
 
-		if len(scene.Entities()) > 0 {
-
-			for _, entity := range scene.Entities() {
-				entity.Update(delta)
-			}
-
-		}
-
 		// enforce fps
 		select {
 		case <-game.ticker.C:

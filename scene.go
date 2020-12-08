@@ -88,7 +88,17 @@ func (scene *Scene) Init() {
 // Update fires on each pass through the game loop and
 // can be overridden. delta is passed in as a parameter,
 // it is the time elapsed since the last pass through the loop
-func (scene *Scene) Update(delta float64) {}
+func (scene *Scene) Update(delta float64) {
+
+	if len(scene.Entities()) > 0 {
+
+		for _, entity := range scene.Entities() {
+			entity.Update(delta)
+		}
+
+	}
+
+}
 
 // Draw is fired after the scene updates on each pass through
 // the game loop. It can be overridden
