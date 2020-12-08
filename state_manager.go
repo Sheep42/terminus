@@ -13,13 +13,13 @@ type IStateManager interface {
 // or overridden, but should provide a basic state
 // machine for most general needs.
 type StateManager struct {
-	defaultState  *State
-	previousState *State
-	currentState  *State
+	defaultState  IState
+	previousState IState
+	currentState  IState
 }
 
 // NewStateManager creates a new StateManager
-func NewStateManager(defaultState *State) *StateManager {
+func NewStateManager(defaultState IState) *StateManager {
 
 	sm := &StateManager{
 		defaultState:  defaultState,
@@ -32,7 +32,7 @@ func NewStateManager(defaultState *State) *StateManager {
 
 // ChangeState changes the current state of
 // the StateManager
-func (sm *StateManager) ChangeState(s *State) {
+func (sm *StateManager) ChangeState(s IState) {
 
 	if nil != sm.currentState {
 
@@ -74,6 +74,6 @@ func (sm *StateManager) Update(delta float64) {
 
 	}
 
-	sm.currentState.Tick()
+	sm.currentState.Tick(delta)
 
 }
