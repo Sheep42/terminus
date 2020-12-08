@@ -51,5 +51,6 @@ func (cs *CustomScene) Setup() {
 
 	// add player to the scene
 	cs.Add(cs.player)
+	cs.Add(t.NewText(0, 0, "Press ESC to quit", t.White, t.Black))
 
 }
