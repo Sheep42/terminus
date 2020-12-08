@@ -9,7 +9,7 @@ type IState interface {
 }
 
 // State is an abstract struct meant to be
-// extended for use with any game or entity,
+// extended for use with any scene or entity,
 // and to be managed by a StateManager
 type State struct {
 }

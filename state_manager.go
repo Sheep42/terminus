@@ -63,7 +63,7 @@ func (sm *StateManager) BackToPrevious() {
 }
 
 // Update should be called inside of the owner
-// entity, scene, or game's Update method. This
+// entity, or scene's Update method. This
 // powers the StateManager
 func (sm *StateManager) Update(delta float64) {
 
