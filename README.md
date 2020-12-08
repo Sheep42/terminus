@@ -11,11 +11,11 @@ If you like it and find it useful, please feel free to use it. Keep in mind thou
 
 Start by installing tcell: 
 
-    go get https://github.com/gdamore/tcell
+    go get github.com/gdamore/tcell
 
 Then by installing terminus: 
     
-    go get https://github.com/Sheep42/terminus
+    go get github.com/Sheep42/terminus
 
 That's all you need to get started :)
 
