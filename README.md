@@ -8,12 +8,6 @@ Terminus is a hobby project and it comes with no warranty or guarantee. I built 
 If you like it and find it useful, please feel free to use it. Keep in mind though that it was built for fun, and not necessarily to be highly performant or revolutionary in any way.
 
 ## Installing
-
-Start by installing tcell: 
-
-    go get github.com/gdamore/tcell
-
-Then by installing terminus: 
     
     go get github.com/Sheep42/terminus
 
