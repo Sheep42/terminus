@@ -30,4 +30,5 @@ const (
 	KeyDown  = tcell.KeyDown
 	KeyRight = tcell.KeyRight
 	KeyLeft  = tcell.KeyLeft
+	KeyEnter = tcell.KeyEnter
 )
