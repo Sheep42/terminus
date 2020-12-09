@@ -39,6 +39,7 @@ func (rs *RunState) OnEnter() {
 	rs.speed = 0.25
 
 	rs.dir = Right
+	rs.snake = []*t.Entity{}
 
 	for i := rs.snakeLength - 1; i >= 0; i-- {
 
@@ -104,6 +105,16 @@ func (rs *RunState) Tick(delta float64) {
 		nextY--
 	} else if rs.dir == Down {
 		nextY++
+	}
+
+	// check if the snake is off-screen
+	gw, gh := g.ScreenSize()
+
+	if nextX > gw || nextX < 0 ||
+		nextY > gh || nextY < 0 {
+
+		rs.scene.stateManager.ChangeState(rs.scene.endState)
+
 	}
 
 	// move the snake by moving the tail to the head
