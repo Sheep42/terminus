@@ -28,6 +28,9 @@ func (es *EndState) OnEnter() {
 
 	scene.Add(es.endText)
 
+	tw, _ := es.endText.GetDimensions()
+	es.endText.SetPosition(es.endText.GetX()-tw/2, es.endText.GetY())
+
 }
 
 func (es *EndState) OnExit() {

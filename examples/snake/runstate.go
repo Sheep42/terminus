@@ -77,6 +77,8 @@ func (rs *RunState) OnExit() {
 
 	rs.scene.Remove(rs.food)
 
+	rs.scene.Remove(rs.scoreText)
+
 }
 
 func (rs *RunState) Tick(delta float64) {
