@@ -75,6 +75,8 @@ func (rs *RunState) OnExit() {
 		rs.scene.Remove(rs.snake[i])
 	}
 
+	rs.scene.Remove(rs.food)
+
 }
 
 func (rs *RunState) Tick(delta float64) {
