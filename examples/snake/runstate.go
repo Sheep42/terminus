@@ -1,7 +1,10 @@
 package main
 
 import (
+	"math/rand"
+	"strconv"
 	t "terminus"
+	"time"
 )
 
 type Direction int
@@ -18,17 +21,24 @@ type RunState struct {
 	scene       *CustomScene
 	snake       []*t.Entity
 	snakeLength int
-	food        []*t.Entity
+	food        *t.Entity
 	speed       float64
 	dir         Direction
 	elapsed     float64
+	rand        *rand.Rand
+	score       int
+	scoreText   *t.Text
 }
 
 func NewRunState(scene *CustomScene) *RunState {
 
+	s1 := rand.NewSource(time.Now().UnixNano())
+
 	return &RunState{
 		State: t.NewState(),
 		scene: scene,
+		rand:  rand.New(s1),
+		score: 0,
 	}
 
 }
@@ -36,10 +46,19 @@ func NewRunState(scene *CustomScene) *RunState {
 func (rs *RunState) OnEnter() {
 
 	rs.snakeLength = 5
-	rs.speed = 0.25
+	rs.speed = 0.2
 
 	rs.dir = Right
 	rs.snake = []*t.Entity{}
+
+	g := rs.scene.Game()
+	gw, gh := g.ScreenSize()
+
+	rs.food = t.NewSpriteEntity(rs.rand.Intn(gw), rs.rand.Intn(gh), 'o', t.Orange, t.Black)
+	rs.scene.Add(rs.food)
+
+	rs.scoreText = t.NewText(gw-15, 0, "Score: 0", t.White, t.Black)
+	rs.scene.Add(rs.scoreText)
 
 	for i := rs.snakeLength - 1; i >= 0; i-- {
 
@@ -120,7 +139,7 @@ func (rs *RunState) Tick(delta float64) {
 	// move the snake by moving the tail to the head
 	rs.snake[rs.snakeLength-1].SetPosition(nextX, nextY)
 
-	// then shift the rest of the snake
+	// then shift the rest of the snake in the slice
 	tmp := rs.snake[rs.snakeLength-1]
 
 	for i := rs.snakeLength - 1; i > 0; i-- {
@@ -130,5 +149,23 @@ func (rs *RunState) Tick(delta float64) {
 	}
 
 	rs.snake[0] = tmp
+
+	if rs.snake[0].Overlaps(rs.food) {
+
+		newTailX, newTailY := rs.snake[rs.snakeLength-1].GetX(), rs.snake[rs.snakeLength-1].GetY()
+
+		rs.snake = append(rs.snake, t.NewSpriteEntity(newTailX, newTailY, 'o'))
+		rs.snakeLength++
+		rs.scene.Add(rs.snake[rs.snakeLength-1])
+
+		rs.food.SetPosition(rs.rand.Intn(gw), rs.rand.Intn(gh))
+		rs.score += 5
+		rs.scoreText.SetText("Score: " + strconv.Itoa(rs.score))
+
+		if rs.speed > 0.05 && rs.score%25 == 0 {
+			rs.speed -= 0.05
+		}
+
+	}
 
 }
