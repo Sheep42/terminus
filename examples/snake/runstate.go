@@ -150,6 +150,18 @@ func (rs *RunState) Tick(delta float64) {
 
 	rs.snake[0] = tmp
 
+	// Game over on self overlap
+	for i := 1; i < rs.snakeLength; i++ {
+
+		if rs.snake[0].Overlaps(rs.snake[i]) {
+
+			rs.scene.stateManager.ChangeState(rs.scene.endState)
+
+		}
+
+	}
+
+	// Eat the food
 	if rs.snake[0].Overlaps(rs.food) {
 
 		newTailX, newTailY := rs.snake[rs.snakeLength-1].GetX(), rs.snake[rs.snakeLength-1].GetY()
