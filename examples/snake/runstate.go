@@ -3,8 +3,9 @@ package main
 import (
 	"math/rand"
 	"strconv"
-	t "terminus"
 	"time"
+
+	t "github.com/Sheep42/terminus"
 )
 
 type Direction int

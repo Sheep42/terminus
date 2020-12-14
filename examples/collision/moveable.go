@@ -1,7 +1,7 @@
 package main
 
 import (
-	t "terminus"
+	t "github.com/Sheep42/terminus"
 )
 
 type Moveable struct {
