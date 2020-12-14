@@ -9,7 +9,7 @@ If you like it and find it useful, please feel free to use it. Keep in mind thou
 
 ## Installing
     
-    go get github.com/Sheep42/terminus
+    $ go get github.com/Sheep42/terminus
 
 That's all you need to get started :)
 
@@ -20,6 +20,56 @@ Change your directory to the example that you want to run. Then run **go build**
     $ cd terminus/examples/collision/
     $ go build
     $ ./collision
+
+### What Are the Examples?
+
+In order of appearance:
+
+### Collision
+
+This is a simple demonstration of how collision can be implemented.
+
+`Moveable` extends `Entity` through composition, and  when input is detected, we can use `Entity`'s built-in `CheckDir` function to detect a collision with any `Entity` in `collidables` before setting the position. This is one of several possible approaches, `Entity`'s built-in utility functions will be explained in more detail below.
+
+### Entity Groups
+
+This is a simple demonstration of how to use an `EntityGroup`. In this case I extend `EntityGroup` in order to override `Update` and move the group as a whole. I also demonstrate moving a single `Entity` within the group.
+
+### Hello World
+
+This example customizes nothing, and simply creates a `Scene` to which the "Hello World" is added.
+
+### Logging
+
+This example demonstrates how you can use logging for print debugging during development, outputting useful information when issues arise, or throwing fatal errors and exiting gameplay.
+
+***This example is designed to crash***. Errors are first printed, and the final error is an intentional fatal error. Errors are logged to the `terminus.log` which will be created inside of the directory where you run the executable.
+
+### Moveable Entity
+
+This example showcases how to implement custom `Entity` logic through a simple `Moveable` entity. It is a simplified version of the Collision example. This is simply an `Entity` which has been extended in order to listen for input, and change its position according to the key pressed. There is some additional logic in place for screen wrapping.
+
+### Scenes
+
+This example showcases how to implement custom `Scene` logic. This is a simple demonstration with different colored screens and text which can be toggled between using the 'z' and 'x' keys.
+
+### Snake
+
+This example is a simple implementation of Snake. This is meant to showcase all of the aspects that might go into a full game built with Terminus. 
+
+While Snake is a relatively simple example, I did manage to make use of `State`s and extended `Scene`'s functionality. 
+
+The game keeps and displays score, increases the snake's speed as the score goes up, presents the snake and food in different colors, and resets when pressing enter from the Game Over state. 
+
+### States
+
+This example is a clone of the Collision example, but it has been expanded to include a pause state which can be toggled by pressing 'p'.
+
+This is meant to be a very simple demonstration of the use of `State` and `StateManager` within the context of a game.
+
+### Text
+
+This example showcases some simple examples of how `Text` can be manipulated and extended in your game.
 
 <!-- ## Understanding the Engine -->
 <!-- TODO: Content -->
