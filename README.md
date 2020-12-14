@@ -71,5 +71,79 @@ This is meant to be a very simple demonstration of the use of `State` and `State
 
 This example showcases some simple examples of how `Text` can be manipulated and extended in your game.
 
-<!-- ## Understanding the Engine -->
-<!-- TODO: Content -->
+## Understanding the Engine
+
+### General
+
+I tried to design Terminus to be simple to use without being too restrictive. The running theme you will notice is that things are heavily Interface-based and you'll be using a lot of composition in order to customize different elements. 
+
+It is easy to create some awkward designs this way, so it is worth thinking through an approach before committing too hard to it.
+
+Outside of that, there really isn't that much to learn, and you should be able to be making a game relatively quickly.
+
+### Simple Example
+
+The most basic example is the Hello World example included in the examples directory. The full source is contained in main.go, and is duplicated below.
+
+    package main
+
+    // import terminus - I abbreviate as 't'
+    import (
+        t "github.com/Sheep42/terminus"
+    )
+
+    func main() {
+
+        // Create the Game
+        g := t.NewGame()
+
+        // Create a Scene
+        s := t.NewSceneCustom(g, t.Black, t.Gray)
+
+        // Add some text
+
+        // override scene color
+        s.Add(t.NewText(2, 2, "Press ESC to quit", t.White, t.Black))
+
+        // Inherit scene color
+        s.Add(t.NewText(5, 5, "Hello World"))
+
+        // g.Init takes a slice of IScenes
+        ss := []t.IScene{s}
+
+        // Init the Game
+        g.Init(ss)
+
+        // Start the Game
+        g.Start()
+
+    }
+
+
+### Game
+
+    Coming Soon
+
+### Scene
+
+    Coming Soon
+
+### Entity
+
+    Coming Soon
+
+### EntityGroup
+
+    Coming Soon
+
+### Text
+
+    Coming Soon
+
+### StateManager
+
+    Coming Soon
+
+### State
+
+    Coming Soon
