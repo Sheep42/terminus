@@ -122,7 +122,184 @@ The most basic example is the Hello World example included in the examples direc
 
 ### Game
 
-    Coming Soon
+`Game` is the main component of the engine. There is no interface to allow for extension of `Game` itself.
+
+A `Game` must always be created and started in order to use terminus. The most basic game would contain the following lines in `main`.
+
+    game := t.NewGame() // Create a Game
+
+    scene := t.NewScene(game) // Create a Scene
+
+    // Init() requires a slice containing all of the 
+    // Game's Scenes
+    scenes := []t.IScene{scene}
+
+    game.Init(scenes) // Run Game's Init function
+
+    game.Start() // Start the Game
+
+Scenes are stored as a slice in `Game`, and referenced by an internal index which always points to the current active scene. The first `Game` scene by default is always the one in `scenes[0]`. 
+
+#### **Functions**
+
+---
+
+#### `NewGame`
+
+Constructor function: create a new `Game` &ndash; Generally you should only need to call this once inside of `main`.
+
+    game := t.NewGame()
+
+#### `Init`
+
+**Params**
+
+* `scenes IScene[]` &ndash; A slice of `Scene`s to load for use in the `Game` 
+
+Initialize the `Game`, set up the Logger, call the `Setup` function on every `Scene` in `scenes`, and call the `Init` function of the first `Scene` &ndash; Generally you should only need to call this once inside of `main`.
+
+**This function must be invoked before `game.Start()`**
+
+    game.Init(scenes) // Assume scenes is of type IScene[]
+
+#### `Start`
+
+Run the actual game loop. This calls the `Update` and `Draw` functions of the currently active scene, and listens for input changes &ndash; Generally you should only need to call this once inside of `main`.
+
+**This function should always be at the end of `main`**
+
+    game.Start()
+
+#### `NextScene`
+
+Increment the Scene index by one and run the `Init` function of the new scene after doing so.
+
+Stop if the index would exceed the last index of `scenes`
+
+    game.NextScene()
+
+#### `PrevScene`
+
+Derement the Scene index by one and run the `Init` function of the new scene after doing so.
+
+Stop if the index would be 0
+
+    game.PrevScene()
+
+#### `SetScene`
+
+**Params**
+
+* `index int` &ndash; The scene index to switch to.
+
+Set the Scene index to a specific number and run the `Init` function of the new scene after doing so.
+
+Fall back to 0 if index exceeds the number of `Scenes` or if index is negative
+
+    game.SetScene(3) 
+
+#### `ExitKey`
+
+**Return**
+
+* `exitKey tcell.Key`
+
+Fetch the `Game`'s current exit key
+
+    key := game.ExitKey()
+
+#### `SetExitKey`
+
+**Params**
+
+* `exitKey tcell.Key` &ndash; For convenience, I have migrated some major Keys from tcell to terminus in the form of constants, but there are many different keys you can choose from in tcell
+
+Set the `Game`'s exit key
+
+**Default exit key value is ESC**
+
+    game.SetExitKey(tcell.KeyCtrlC)
+
+#### `GetFPS`
+
+**Return**
+
+* `fps float64`
+
+Fetch the `Game`'s target FPS.
+
+    fps := game.GetFPS() 
+
+#### `SetFPS`
+
+**Params**
+
+* `fps float64` &ndash; The target FPS number
+
+Set the `Game`'s target FPS.
+
+**Default FPS is 60**
+
+**Call this before `game.Init`**
+
+    game.SetFPS(30)
+    game.Init()
+
+#### `GetLogger`
+
+**Return**
+
+* `logger *log.Logger`
+
+Fetch the `Game`'s Logger instance &ndash; Once you have it, use it like any log.Logger
+
+    l := game.GetLogger()
+    l.Println("Logger Out")
+
+#### `SetLogFileName`
+
+**Params**
+
+* `filename string` &ndash; The log file name 
+
+Set a custom log file name for
+logger output. Default value is 'terminus.log'
+
+**Call this before `game.Init`**
+
+    game.SetLogFileName("custom_log.log")
+    game.Init()
+
+
+#### `Input`
+
+**Return**
+
+* `input *tcell.EventKey` &ndash; The engine constantly listens for input, if there is none the return value will be `nil`
+
+Fetch the current `Game`'s input data.  
+
+    i := game.Input()
+
+#### `ScreenSize`
+
+**Return** 
+
+* `width, height (int, int)`
+
+Fetch the current screen size
+
+    w, h := game.ScreenSize()
+
+#### `CurrentScene`
+
+**Return** 
+
+* `scene *Scene`
+
+Fetch the current `Scene`
+
+    scene := game.CurrentScene()
 
 ### Scene
 
