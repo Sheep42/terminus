@@ -204,6 +204,28 @@ func (game *Game) PrevScene() {
 
 }
 
+// SetScene sets sceneIndex to a specific number
+// to switch to any scene on the fly
+func (game *Game) SetScene(index int) {
+
+	if index < len(game.scenes) && index >= 0 {
+
+		game.sceneIndex = index
+
+	} else {
+
+		game.logger.Printf(
+			"Cannot set sceneIndex to %d, index out of bounds: 0-%d. Falling back to 0",
+			index,
+			len(game.scenes)-1,
+		)
+
+	}
+
+	game.scenes[game.sceneIndex].Init()
+
+}
+
 // ExitKey gets the assigned exit key
 func (game *Game) ExitKey() tcell.Key {
 	return game.exitKey
