@@ -303,7 +303,154 @@ Fetch the current `Scene`
 
 ### Scene
 
-    Coming Soon
+`Scene`s are used to render content to a `Game` screen, and a `Scene` is usually the first thing that you will add to a game.
+
+`Scene` can be extended via composition, in order to override `Setup`, `Init`, `Update`, or `Draw` with custom logic.
+
+#### **Functions**
+
+---
+
+#### `NewScene`
+
+**Params**
+
+* `game *Game`
+
+**Return**
+
+* `scene *Scene`
+
+Creates a new `Scene` to be used in a `Game`. Uses default screen colors.
+
+    s := t.NewScene(g)
+
+#### `NewSceneCustom`
+
+**Params**
+
+* `game *Game` 
+* `foreground tcell.Color` 
+* `background tcell.Color`
+
+**Return**
+
+* `scene *Scene`
+
+Creates a new `Scene` with custom foreground and background colors. Foreground affects `Entities`, background is the screen background color.
+
+    s := t.NewSceneCustom(g, t.Black, t.Gray)
+
+#### `Setup`
+
+Fires **only once** during `Game`'s `Init` function for every `Scene` in `scenes`. Keep in mind this happens at the launch of the `Game`, so this will run before any `Scene`s are rendered, and it runs for all `Scene`s at once.
+
+This is a good place to do scene one-time tasks, such as adding `Entities`, or property initializations that only need to happen once.
+
+This function can be overridden in order to customize your `Scene`.
+
+#### `Init`
+
+Fires just before the `Scene` is first rendered. 
+
+This runs for the first `Scene` in `scenes` when the `Game`'s `Init` function runs. It is fired after `Setup` is completed for all `Scenes`.
+
+You should do `Scene` setup actions here that cannot be done in `Setup` or must be run each time the `Scene` is re-entered. For example, reset `Scene` data, or reload removed `Entities`.
+
+In the **Scenes** example, I used `Init` to center the `Scene` text, because screen size is not yet available in `Setup`.
+
+This function can be overridden in order to customize your `Scene`.
+
+#### `Update`
+
+**Params**
+
+* `delta float64` &ndash; The time elapsed since the last pass through the game loop.
+
+Fires on each pass of the game loop. You can use `delta` to implement timers.
+
+This is where the meat of your custom `Scene` logic should go. You should add any custom interactivity logic, movement, etc to your overridden `Update` function.
+
+If you are using a `StateManager` in your `Scene` you will most likely only be calling `StateManager`'s `Update` inside of here. 
+
+This function can be overridden in order to customize your `Scene`.
+
+
+#### `Draw`
+
+#### `Entities`
+
+#### `GetScene`
+
+#### `Add`
+
+#### `Remove`
+
+#### `Game`
+
+#### `Entities`
+
+#### `GetScene`
+
+#### `SetRedraw`
+
+#### **Custom Scenes**
+
+---
+
+Below is a very simple skeleton of a custom `Scene` through composition. You will find more detailed real-world examples by reading through the examples included in the package. This `Scene` adds text to the screen and centers it.
+
+    package main
+
+    import (
+        t "github.com/Sheep42/terminus"
+        "github.com/gdamore/tcell"
+    )
+
+    type CustomScene struct {
+        *t.Scene
+        title *t.Text
+    }
+
+    func NewCustomScene(g *t.Game, fg, bg tcell.Color, title string) *CustomScene {
+
+        cs := &CustomScene{
+            // NewSceneCustom is like NewScene, but allows
+            // custom foreground and background colors
+            t.NewSceneCustom(g, fg, bg),
+            t.NewText(0, 0, title),
+        }
+
+        return cs
+
+    }
+
+    func (cs *CustomScene) Setup() {
+
+        cs.Scene.Setup() // super
+        cs.Add(cs.title)
+
+    }
+
+    func (cs *CustomScene) Init() {
+
+        cs.Scene.Init() // super
+
+        game := cs.Game()
+
+        screenWidth, screenHeight := game.ScreenSize()
+        textWidth, textHeight := cs.title.GetDimensions()
+
+        cs.title.SetPosition(screenWidth/2-textWidth/2, screenHeight/2-textHeight/2)
+
+    }
+
+    func (cs *CustomScene) Update(delta float64) {
+
+        cs.Scene.Update() // super
+
+    }
+
 
 ### Entity
 
