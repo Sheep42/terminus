@@ -384,13 +384,67 @@ This function can be overridden in order to customize your `Scene`.
 
 #### `Draw`
 
+`Draw` is fired after the `Scene` updates, on each pass through
+the game loop. 
+
+This function can be overridden in order to customize your `Scene`. **However**, if you don't call `myScene.Scene.Draw()` in your overridden function, you will need to render all `Scene` children and hanlde scene refreshing on your own.
+
 #### `Entities`
+
+**Return**
+
+* `entities []IEntity`
+
+Get the `Scene`'s slice of `Entities`. 
+
+This will return a slice of type `IEntity`. In order to get access to the underlying `Entity`, you can call `iEntity.GetEntity()`.
+
+    s := t.NewSceneCustom(g, t.Black, t.Gray)
+
+    // ...
+
+    for _, iEntity := range s.Entities() {
+
+        e := iEntity.GetEntity()
+        e.SetPosition( e.GetX(), e.GetY() + 1)
+
+    }
 
 #### `GetScene`
 
+**Return**
+
+* `scene *Scene`
+
+Returns the `Scene`. This function is exposed via `IScene`, and can be used to get the actual `Scene` for manipulation given a generalized  `IScene`. 
+
+    g := NewGame()
+
+    ss := []IScene{
+        NewCustomScene(g),
+        NewOtherCustomScene(g),
+    }
+
+    // ...
+
+    for _, iScene := ss {
+
+        s := iScene.GetScene()
+        s.Add(NewEntity(2,2))
+
+    }
+
 #### `Add`
 
+**Params**
+
+* `entity IEntity`
+
+Attach the specified `Entity` to the `Scene`. Once an `Entity` is added to a `Scene`, that Entity will be rendered by the `Scene`'s `Draw` function.
+
 #### `Remove`
+
+**Params**
 
 #### `Game`
 
