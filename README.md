@@ -7,6 +7,12 @@ Terminus is a hobby project and it comes with no warranty or guarantee. I built 
 
 If you like it and find it useful, please feel free to use it. Keep in mind though that it was built for fun, and not necessarily to be highly performant or revolutionary in any way.
 
+![Image of snake game](examples/images/snake.gif?raw=true "Snake Example")
+
+![Image of scenes example](examples/images/scenes.gif?raw=true "Scenes Example")
+
+![Image of collision example](examples/images/collision.gif?raw=true "Collision Example")
+
 ## Installing
     
     $ go get github.com/Sheep42/terminus
