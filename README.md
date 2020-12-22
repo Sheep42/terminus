@@ -423,7 +423,9 @@ This function can be overridden in order to customize your `Scene`.
 #### `Draw`
 
 `Draw` is fired after the `Scene` updates, on each pass through
-the game loop. 
+the game loop.
+
+A design decision worth noting is that my implementation of `Draw` only redraws the screen when `scene.redraw` has been flagged. Several actions in the engine flag a scene for a redraw. This is to work around screen flicker on each update in Windows terminals.
 
 This function can be overridden in order to customize your `Scene`. **However**, if you don't call `myScene.Scene.Draw()` in your overridden function, you will need to render all `Scene` children and hanlde scene refreshing on your own.
 
@@ -484,17 +486,44 @@ Returns the `Scene`. This function is exposed via `IScene`, and can be used to g
 
 Attach the specified `Entity` to the `Scene`. Once an `Entity` is added to a `Scene`, that Entity will be rendered by the `Scene`'s `Draw` function.
 
+**This function flags the `Scene` for redraw**
+
 #### `Remove`
 
 **Params**
 
+* `entity IEntity`
+
+Remove the specified `Entity` from the `Scene`. Once an `Entity` is removed from a `Scene`, that Entity will no longer be rendered by the `Scene`'s `Draw` function.
+
+**This function flags the `Scene` for redraw**
+
 #### `Game`
 
-#### `Entities`
+**Return**
 
-#### `GetScene`
+* `game *Game`
+
+Returns the `Scene`'s game. Useful if you need to reference `Game` in the context of a `Scene`.
+
+```go
+    g := scene.Game()
+```
 
 #### `SetRedraw`
+
+**Params**
+
+* `redraw bool`
+
+Allows you to tell the `Scene` to redraw (true) or not (false) on the next frame.
+
+```go
+    // Do something...
+
+    // Force a scene redraw
+    scene.SetRedraw( true )
+```
 
 #### **Custom Scenes**
 
