@@ -14,8 +14,10 @@ If you like it and find it useful, please feel free to use it. Keep in mind thou
 ![Image of collision example](examples/images/collision.gif?raw=true "Collision Example")
 
 ## Installing
-    
+
+```bash
     $ go get github.com/Sheep42/terminus
+```
 
 That's all you need to get started :)
 
@@ -23,9 +25,11 @@ That's all you need to get started :)
 
 Change your directory to the example that you want to run. Then run **go build**. Finally, run the executable, it will have the same name as the example directory. 
 
+```bash
     $ cd terminus/examples/collision/
     $ go build
     $ ./collision
+```
 
 ### What Are the Examples?
 
@@ -91,6 +95,7 @@ Outside of that, there really isn't that much to learn, and you should be able t
 
 The most basic example is the Hello World example included in the examples directory. The full source is contained in main.go, and is duplicated below.
 
+```go
     package main
 
     // import terminus - I abbreviate as 't'
@@ -124,7 +129,7 @@ The most basic example is the Hello World example included in the examples direc
         g.Start()
 
     }
-
+```
 
 ### Game
 
@@ -132,6 +137,7 @@ The most basic example is the Hello World example included in the examples direc
 
 A `Game` must always be created and started in order to use terminus. The most basic game would contain the following lines in `main`.
 
+```go
     game := t.NewGame() // Create a Game
 
     scene := t.NewScene(game) // Create a Scene
@@ -143,6 +149,7 @@ A `Game` must always be created and started in order to use terminus. The most b
     game.Init(scenes) // Run Game's Init function
 
     game.Start() // Start the Game
+```
 
 Scenes are stored as a slice in `Game`, and referenced by an internal index which always points to the current active scene. The first `Game` scene by default is always the one in `scenes[0]`. 
 
@@ -154,7 +161,9 @@ Scenes are stored as a slice in `Game`, and referenced by an internal index whic
 
 Constructor function: create a new `Game` &ndash; Generally you should only need to call this once inside of `main`.
 
+```go
     game := t.NewGame()
+```
 
 #### `Init`
 
@@ -174,7 +183,9 @@ Run the actual game loop. This calls the `Update` and `Draw` functions of the cu
 
 **This function should always be at the end of `main`**
 
+```go
     game.Start()
+```
 
 #### `NextScene`
 
@@ -182,7 +193,9 @@ Increment the Scene index by one and run the `Init` function of the new scene af
 
 Stop if the index would exceed the last index of `scenes`
 
+```go
     game.NextScene()
+```
 
 #### `PrevScene`
 
@@ -190,7 +203,9 @@ Derement the Scene index by one and run the `Init` function of the new scene aft
 
 Stop if the index would be 0
 
+```go
     game.PrevScene()
+```
 
 #### `SetScene`
 
@@ -202,7 +217,9 @@ Set the Scene index to a specific number and run the `Init` function of the new 
 
 Fall back to 0 if index exceeds the number of `Scenes` or if index is negative
 
+```go
     game.SetScene(3) 
+```
 
 #### `ExitKey`
 
@@ -212,7 +229,9 @@ Fall back to 0 if index exceeds the number of `Scenes` or if index is negative
 
 Fetch the `Game`'s current exit key
 
+```go
     key := game.ExitKey()
+```
 
 #### `SetExitKey`
 
@@ -224,7 +243,9 @@ Set the `Game`'s exit key
 
 **Default exit key value is ESC**
 
+```go
     game.SetExitKey(tcell.KeyCtrlC)
+```
 
 #### `GetFPS`
 
@@ -234,7 +255,9 @@ Set the `Game`'s exit key
 
 Fetch the `Game`'s target FPS.
 
+```go
     fps := game.GetFPS() 
+```
 
 #### `SetFPS`
 
@@ -248,8 +271,10 @@ Set the `Game`'s target FPS.
 
 **Call this before `game.Init`**
 
+```go
     game.SetFPS(30)
     game.Init()
+```
 
 #### `GetLogger`
 
@@ -259,8 +284,10 @@ Set the `Game`'s target FPS.
 
 Fetch the `Game`'s Logger instance &ndash; Once you have it, use it like any log.Logger
 
+```go
     l := game.GetLogger()
     l.Println("Logger Out")
+```
 
 #### `SetLogFileName`
 
@@ -273,9 +300,10 @@ logger output. Default value is 'terminus.log'
 
 **Call this before `game.Init`**
 
+```go
     game.SetLogFileName("custom_log.log")
     game.Init()
-
+```
 
 #### `Input`
 
@@ -285,7 +313,9 @@ logger output. Default value is 'terminus.log'
 
 Fetch the current `Game`'s input data.  
 
+```go
     i := game.Input()
+```
 
 #### `ScreenSize`
 
@@ -295,7 +325,9 @@ Fetch the current `Game`'s input data.
 
 Fetch the current screen size
 
+```go
     w, h := game.ScreenSize()
+```
 
 #### `CurrentScene`
 
@@ -305,7 +337,9 @@ Fetch the current screen size
 
 Fetch the current `Scene`
 
+```go
     scene := game.CurrentScene()
+```
 
 ### Scene
 
@@ -329,7 +363,9 @@ Fetch the current `Scene`
 
 Creates a new `Scene` to be used in a `Game`. Uses default screen colors.
 
+```go
     s := t.NewScene(g)
+```
 
 #### `NewSceneCustom`
 
@@ -345,7 +381,9 @@ Creates a new `Scene` to be used in a `Game`. Uses default screen colors.
 
 Creates a new `Scene` with custom foreground and background colors. Foreground affects `Entities`, background is the screen background color.
 
+```go
     s := t.NewSceneCustom(g, t.Black, t.Gray)
+```
 
 #### `Setup`
 
@@ -399,6 +437,7 @@ Get the `Scene`'s slice of `Entities`.
 
 This will return a slice of type `IEntity`. In order to get access to the underlying `Entity`, you can call `iEntity.GetEntity()`.
 
+```go
     s := t.NewSceneCustom(g, t.Black, t.Gray)
 
     // ...
@@ -409,6 +448,7 @@ This will return a slice of type `IEntity`. In order to get access to the underl
         e.SetPosition( e.GetX(), e.GetY() + 1)
 
     }
+```
 
 #### `GetScene`
 
@@ -418,6 +458,7 @@ This will return a slice of type `IEntity`. In order to get access to the underl
 
 Returns the `Scene`. This function is exposed via `IScene`, and can be used to get the actual `Scene` for manipulation given a generalized  `IScene`. 
 
+```go
     g := NewGame()
 
     ss := []IScene{
@@ -433,6 +474,7 @@ Returns the `Scene`. This function is exposed via `IScene`, and can be used to g
         s.Add(NewEntity(2,2))
 
     }
+```
 
 #### `Add`
 
@@ -460,6 +502,7 @@ Attach the specified `Entity` to the `Scene`. Once an `Entity` is added to a `Sc
 
 Below is a very simple skeleton of a custom `Scene` through composition. You will find more detailed real-world examples by reading through the examples included in the package. This `Scene` adds text to the screen and centers it.
 
+```go
     package main
 
     import (
@@ -510,6 +553,7 @@ Below is a very simple skeleton of a custom `Scene` through composition. You wil
         cs.Scene.Update() // super
 
     }
+```
 
 
 ### Entity
