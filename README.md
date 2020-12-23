@@ -464,8 +464,8 @@ Returns the `Scene`. This function is exposed via `IScene`, and can be used to g
     g := NewGame()
 
     ss := []IScene{
-        NewCustomScene(g),
-        NewOtherCustomScene(g),
+        t.NewCustomScene(g),
+        t.NewOtherCustomScene(g),
     }
 
     // ...
@@ -473,7 +473,7 @@ Returns the `Scene`. This function is exposed via `IScene`, and can be used to g
     for _, iScene := ss {
 
         s := iScene.GetScene()
-        s.Add(NewEntity(2,2))
+        s.Add(t.NewEntity(2, 2))
 
     }
 ```
@@ -485,6 +485,8 @@ Returns the `Scene`. This function is exposed via `IScene`, and can be used to g
 * `entity IEntity`
 
 Attach the specified `Entity` to the `Scene`. Once an `Entity` is added to a `Scene`, that Entity will be rendered by the `Scene`'s `Draw` function.
+
+A single `Entity` **can** be added to multiple `Scene`s
 
 **This function flags the `Scene` for redraw**
 
@@ -584,10 +586,139 @@ Below is a very simple skeleton of a custom `Scene` through composition. You wil
     }
 ```
 
-
 ### Entity
 
-    Coming Soon
+An `Entity` is used to represent any general object that will exist in a `Scene`. 
+
+`Entities` must have an x position and a y position, and may have a sprite. `Text` and `EntityGroup`s are extensions of `Entity`, and can be manipulated in much the same way. 
+
+`Entities` can be added to a `Scene` or removed from a `Scene`. An `Entity` will be rendered to the screen once added to a `Scene` during that `Scene`'s `Draw`. 
+
+#### `NewEntity`
+
+Takes an x position and a y position and creates an `Entity` without a sprite. This can be used if you plan to extend `Entity` and it does not make sense for the root `Entity` to have a sprite, such as with `EntityGroup`. This can also be used if you plan on assigning a sprite at a later time.
+
+**Params**
+
+* `x int`
+* `y int`
+
+```go
+    e := NewEntity(5, 5)
+```
+
+#### `NewSpriteEntity`
+
+Takes an x position, a y position, and a `rune` to be used as a visual representation, and creates an `Entity`. 
+
+Colors are optional - foreground & background required if used.
+
+**Params**
+
+* `x int`
+* `y int`
+* `sprite rune`
+* `fg tcell.Color` (optional)
+* `bg tcell.Color` (optional)
+
+```go
+    spriteE := t.NewSpriteEntity(5, 5, '#')
+    colorE := t.NewSpriteEntity(5, 5, '#',  tcell.ColorBlack, tcell.ColorGray)
+```
+
+#### `Init`
+
+Fires duting `game.Init`, if the `Entity` has been added to a `Scene` at that point.
+
+If you add an `Entity` to a `Scene` later, you must call `Init` manually. 
+
+By default `Init` does nothing and is not needed, but it can be overridden for your own custom implementations.
+
+#### `Update`
+
+**Params**
+
+* `delta float64` &ndash; The time elapsed since the last pass through the game loop.
+
+Fires after the `Scene` `Update` on each pass through the game loop. 
+
+This can be overridden in order to customize an `Entity`.
+
+#### `Draw`
+
+Fires during scene redraw, and is responsible for rendering the `Entity`.
+
+Draw and can be overridden in order to extend or replace functionality. But be careful, overridding this without calling `customEntity.Entity.Draw()` means that you will need to handle rendering the `Entity` on your own.
+
+#### `GetEntity`
+
+**Return**
+
+* `entity *Entity`
+
+Returns the `Entity`. Generally used to get the actual `Entity` from an `IEntity`.
+
+```go
+    entities := []IEntity{
+        t.NewEntity(5, 5),
+        t.NewSpriteEntity(3, 3, '@'),
+    }
+
+    for _, e := range entities {
+
+        e.GetEntity().SetScene(scene)
+
+    }
+```
+
+#### `SetScene`
+
+**Params**
+
+* `scene *Scene`
+
+Sets the `Entity`'s `Scene` and `Game`. 
+
+`Scene.Add()` uses this function to update the `Entity`'s `Scene` value when it is added.
+
+#### `GetScene`
+
+**Return**
+
+* `scene *Scene`
+
+Gets the `Scene` that the `Entity` is associated with.
+
+#### `GetGame`
+
+#### `GetX`
+
+#### `GetY`
+
+#### `SetPosition`
+
+#### `GetPosition`
+
+#### `SetSprite`
+
+#### `GetSprite`
+
+#### `SetColor`
+
+#### `Overlaps`
+
+#### `OverlapsPoint`
+
+#### `CheckDir`
+
+#### `IsLeftOf`
+
+#### `IsRightOf`
+
+#### `IsAbove`
+
+#### `IsBelow`
+
 
 ### EntityGroup
 
