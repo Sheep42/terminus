@@ -594,6 +594,10 @@ An `Entity` is used to represent any general object that will exist in a `Scene`
 
 `Entities` can be added to a `Scene` or removed from a `Scene`. An `Entity` will be rendered to the screen once added to a `Scene` during that `Scene`'s `Draw`. 
 
+#### **Functions**
+
+---
+
 #### `NewEntity`
 
 Takes an x position and a y position and creates an `Entity` without a sprite. This can be used if you plan to extend `Entity` and it does not make sense for the root `Entity` to have a sprite, such as with `EntityGroup`. This can also be used if you plan on assigning a sprite at a later time.
