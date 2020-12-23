@@ -82,15 +82,15 @@ func (eg *EntityGroup) Draw() {
 
 }
 
-// AddEntityToScene adds the Entity to the given scene
-func (eg *EntityGroup) AddEntityToScene(scene *Scene) {
+// SetScene adds the Entity to the given scene
+func (eg *EntityGroup) SetScene(scene *Scene) {
 
 	eg.Entity.game = scene.game
 	eg.Entity.scene = scene
 
 	for _, e := range eg.entities {
 
-		e.GetEntity().AddEntityToScene(scene)
+		e.GetEntity().SetScene(scene)
 
 	}
 
@@ -138,7 +138,7 @@ func (eg *EntityGroup) SetEntities(entities []IEntity) {
 
 		for _, e := range eg.entities {
 
-			e.GetEntity().AddEntityToScene(eg.scene)
+			e.GetEntity().SetScene(eg.scene)
 
 		}
 

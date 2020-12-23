@@ -139,7 +139,7 @@ func (scene *Scene) drawScene() {
 // order that they have been added to the Scene
 func (scene *Scene) Add(entity IEntity) {
 
-	entity.AddEntityToScene(scene)
+	entity.SetScene(scene)
 	scene.entities = append(scene.entities, entity)
 	scene.redraw = true
 

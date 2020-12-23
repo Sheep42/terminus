@@ -10,7 +10,7 @@ type IEntity interface {
 	Init()
 	Update(delta float64)
 	Draw()
-	AddEntityToScene(scene *Scene)
+	SetScene(scene *Scene)
 	GetEntity() *Entity
 }
 
@@ -97,12 +97,11 @@ func (entity *Entity) GetEntity() *Entity {
 	return entity
 }
 
-// AddEntityToScene adds the Entity to the given scene
-func (entity *Entity) AddEntityToScene(scene *Scene) {
+// SetScene Sets the Entity's Scene and Game
+func (entity *Entity) SetScene(scene *Scene) {
 
 	entity.game = scene.game
 	entity.scene = scene
-	scene.redraw = true
 
 }
 
