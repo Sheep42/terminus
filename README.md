@@ -805,7 +805,7 @@ Checks if the `Entity` overlaps the specified screen point.
 
 ```go
     // Checks if e is currently overlapping (2, 5)
-    overlaps := e.OverlapsPoint(2, 3)
+    overlaps := e.OverlapsPoint(2, 5)
 ```
 
 #### `CheckDir`
