@@ -321,7 +321,7 @@ Fetch the current `Game`'s input data.
 
 **Return** 
 
-* `width, height (int, int)`
+* `width int, height int`
 
 Fetch the current screen size
 
@@ -695,34 +695,206 @@ Gets the `Scene` that the `Entity` is associated with.
 
 #### `GetGame`
 
+**Return**
+
+* `game *Game`
+
+Gets the Game the the Entity is associated with.
+
 #### `GetX`
+
+**Return**
+
+* `x int`
+
+Gets the x position of the `Entity`
 
 #### `GetY`
 
+**Return**
+
+* `y int`
+
+Gets the y position of the `Entity`
+
 #### `SetPosition`
+
+**Params**
+
+* `x int`
+* `y int`
+
+Sets the `Entity`'s x and y position simultaneously.
+
+```go
+   e.SetPosition(2, 5)
+```
+
+**This function flags the `Scene` for redraw**
 
 #### `GetPosition`
 
+**Return**
+
+* `x int, y int`
+
+Gets the `Entity`'s x and y position simultaneously.
+
+```go
+    x, y := e.GetPosition()
+```
+
 #### `SetSprite`
+
+**Params**
+
+* `sprite rune`
+
+Sets the `Entity`'s sprite. 
+
+**This function flags the `Scene` for redraw**
 
 #### `GetSprite`
 
+**Return**
+
+* `sprite rune`
+
+Returns the rune that visually represents the `Entity`.
+
 #### `SetColor`
+
+**Params**
+
+* `foreground tcell.Color`
+* `background tcell.Color`
+
+Changes the `Entity`'s style foreground and background colors.
+
+**This function flags the `Scene` for redraw**
 
 #### `Overlaps`
 
+**Params**
+
+* `target IEntity`
+
+**Return**
+
+* `overlaps bool`
+
+Checks if the `Entity` currently overlaps the target `Entity`. Overlaps is simply a check if two `Entities` occupy the same coordinates.
+
+```go
+    // Checks if e is currently overlapping e2
+    overlaps := e.Overlaps(e2)
+```
+
 #### `OverlapsPoint`
+
+**Params**
+
+* `x int` - The x position to check
+* `y int` - The y position to check
+
+**Return**
+
+* `overlaps bool`
+
+Checks if the `Entity` overlaps the specified screen point.
+
+```go
+    // Checks if e is currently overlapping (2, 5)
+    overlaps := e.OverlapsPoint(2, 3)
+```
 
 #### `CheckDir`
 
+**Params**
+
+* `axis rune` - 'x' or 'y'
+* `distance int` - distance of 0 is the same as overlapping.
+* `point int` - The point to check on the specified axis 
+
+**Return**
+
+* `isDistanceAway bool`
+
+Checks if the `Entity` is the specified distance away from the target point.
+
+```go
+    
+    eX, eY := e.GetPosition()
+    e2X, e2Y := e2.GetPosition()
+
+    changeX := 1
+    changeY := 0
+
+    // check if changing position of e by changeX, changeY would result in a collision
+    collided := e.CheckDir('x', changeX, e2X) && e.CheckDir('y', changeY, e2Y)
+
+```
+
 #### `IsLeftOf`
+
+**Params**
+
+* `target IEntity`
+
+**Return**
+
+* `isLeft bool`
+
+Checks if the `Entity` is directly to the left of the target `Entity`
+
+Note: This function checks if `Entity` is exactly 1 unit in the specified direction.
+
+```go
+    // checks if e is directly left of e2
+    isLeft := e.IsLeftOf(e2)
+```
 
 #### `IsRightOf`
 
+**Params**
+
+* `target IEntity`
+
+**Return**
+
+* `isRight bool`
+
+Checks if the `Entity` is directly to the right of the target `Entity`
+
+Note: This function checks if `Entity` is exactly 1 unit in the specified direction.
+
 #### `IsAbove`
+
+**Params**
+
+* `target IEntity`
+
+**Return**
+
+* `isAbove bool`
+
+Checks if the `Entity` is directly above the target `Entity`
+
+Note: This function checks if `Entity` is exactly 1 unit in the specified direction.
 
 #### `IsBelow`
 
+**Params**
+
+* `target IEntity`
+
+**Return**
+
+* `isBelow bool`
+
+Checks if the `Entity` is directly below the target `Entity`
+
+Note: This function checks if `Entity` is exactly 1 unit in the specified direction.
 
 ### EntityGroup
 
