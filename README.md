@@ -1029,7 +1029,7 @@ e := t.NewSpriteEntity(0, 0, '#')
 e2 := t.NewCustomEntity(0, 0, '#')
 
 eg := t.NewEntityGroup(5, 5, 10, 10, []IEntity{e, e2})
-eg2 := t.NewEntityGroup(20, 20, 10, 10, []IEntity{e, e2}, t.RED, t.BLUE) 
+eg2 := t.NewEntityGroup(20, 20, 10, 10, []IEntity{e, e2}, t.Red, t.Blue) 
 ```
 
 `Init`
@@ -1138,20 +1138,73 @@ Below are the overridden or unique functions.
 
 `NewText`
 
+**Params**
+
+* `x int`
+* `y int`
+* `text string`
+* `fg tcell.Color` - optional
+* `bg tcell.Color` - optional
+
+Takes an x position, y position, and textvalue and creates a new `Text` on the screen. 
+If colors are passed, fg & bg are required.
+
+```go
+	t.NewText(5, 5, "Hello World")
+	t.NewText(0, 0, "Press ESC to quit", t.Blue, t.Black)
+```
+
 `Update`
+
+**Params**
+
+* `delta float`
+
+Invokes `text.EntityGroup.Update()`. Can be overridden for custom functionality.
 
 `ToEntities`
 
+**Params**
+
+* `text string`
+
+**Return**
+
+* `entities []IEntity`
+
+Converts the given string of text into a slice of `IEntities`.
+
 `SetText`
+
+**Params**
+
+* `newText string`
+
+Sets the `text` value of the `Text`.
 
 `GetText`
 
+**Return**
+
+* `text string`
+
+Gets the string value of `text`.
+
 `GetEntityGroup`
 
+**Return**
+
+* `entityGroup *EntityGroup`
+
+Gets the underlying `EntityGroup` behind the `Text`.
+
+---
 
 ## StateManager
 
     Coming Soon
+
+---
 
 ## State
 
