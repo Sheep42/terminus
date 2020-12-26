@@ -16,7 +16,7 @@ If you like it and find it useful, please feel free to use it. Keep in mind thou
 ## Installing
 
 ```bash
-    $ go get github.com/Sheep42/terminus
+$ go get github.com/Sheep42/terminus
 ```
 
 That's all you need to get started :)
@@ -26,9 +26,9 @@ That's all you need to get started :)
 Change your directory to the example that you want to run. Then run **go build**. Finally, run the executable, it will have the same name as the example directory. 
 
 ```bash
-    $ cd terminus/examples/collision/
-    $ go build
-    $ ./collision
+$ cd terminus/examples/collision/
+$ go build
+$ ./collision
 ```
 
 ### What Are the Examples?
@@ -96,39 +96,39 @@ Outside of that, there really isn't that much to learn, and you should be able t
 The most basic example is the Hello World example included in the examples directory. The full source is contained in main.go, and is duplicated below.
 
 ```go
-    package main
+package main
 
-    // import terminus - I abbreviate as 't'
-    import (
-        t "github.com/Sheep42/terminus"
-    )
+// import terminus - I abbreviate as 't'
+import (
+    t "github.com/Sheep42/terminus"
+)
 
-    func main() {
+func main() {
 
-        // Create the Game
-        g := t.NewGame()
+    // Create the Game
+    g := t.NewGame()
 
-        // Create a Scene
-        s := t.NewSceneCustom(g, t.Black, t.Gray)
+    // Create a Scene
+    s := t.NewSceneCustom(g, t.Black, t.Gray)
 
-        // Add some text
+    // Add some text
 
-        // override scene color
-        s.Add(t.NewText(2, 2, "Press ESC to quit", t.White, t.Black))
+    // override scene color
+    s.Add(t.NewText(2, 2, "Press ESC to quit", t.White, t.Black))
 
-        // Inherit scene color
-        s.Add(t.NewText(5, 5, "Hello World"))
+    // Inherit scene color
+    s.Add(t.NewText(5, 5, "Hello World"))
 
-        // g.Init takes a slice of IScenes
-        ss := []t.IScene{s}
+    // g.Init takes a slice of IScenes
+    ss := []t.IScene{s}
 
-        // Init the Game
-        g.Init(ss)
+    // Init the Game
+    g.Init(ss)
 
-        // Start the Game
-        g.Start()
+    // Start the Game
+    g.Start()
 
-    }
+}
 ```
 
 ### Game
@@ -138,17 +138,17 @@ The most basic example is the Hello World example included in the examples direc
 A `Game` must always be created and started in order to use terminus. The most basic game would contain the following lines in `main`.
 
 ```go
-    game := t.NewGame() // Create a Game
+game := t.NewGame() // Create a Game
 
-    scene := t.NewScene(game) // Create a Scene
+scene := t.NewScene(game) // Create a Scene
 
-    // Init() requires a slice containing all of the 
-    // Game's Scenes
-    scenes := []t.IScene{scene}
+// Init() requires a slice containing all of the 
+// Game's Scenes
+scenes := []t.IScene{scene}
 
-    game.Init(scenes) // Run Game's Init function
+game.Init(scenes) // Run Game's Init function
 
-    game.Start() // Start the Game
+game.Start() // Start the Game
 ```
 
 Scenes are stored as a slice in `Game`, and referenced by an internal index which always points to the current active scene. The first `Game` scene by default is always the one in `scenes[0]`. 
@@ -162,7 +162,7 @@ Scenes are stored as a slice in `Game`, and referenced by an internal index whic
 Constructor function: create a new `Game` &ndash; Generally you should only need to call this once inside of `main`.
 
 ```go
-    game := t.NewGame()
+game := t.NewGame()
 ```
 
 #### `Init`
@@ -184,7 +184,7 @@ Run the actual game loop. This calls the `Update` and `Draw` functions of the cu
 **This function should always be at the end of `main`**
 
 ```go
-    game.Start()
+game.Start()
 ```
 
 #### `NextScene`
@@ -194,7 +194,7 @@ Increment the Scene index by one and run the `Init` function of the new scene af
 Stop if the index would exceed the last index of `scenes`
 
 ```go
-    game.NextScene()
+game.NextScene()
 ```
 
 #### `PrevScene`
@@ -204,7 +204,7 @@ Derement the Scene index by one and run the `Init` function of the new scene aft
 Stop if the index would be 0
 
 ```go
-    game.PrevScene()
+game.PrevScene()
 ```
 
 #### `SetScene`
@@ -218,7 +218,7 @@ Set the Scene index to a specific number and run the `Init` function of the new 
 Fall back to 0 if index exceeds the number of `Scenes` or if index is negative
 
 ```go
-    game.SetScene(3) 
+game.SetScene(3) 
 ```
 
 #### `ExitKey`
@@ -230,7 +230,7 @@ Fall back to 0 if index exceeds the number of `Scenes` or if index is negative
 Fetch the `Game`'s current exit key
 
 ```go
-    key := game.ExitKey()
+key := game.ExitKey()
 ```
 
 #### `SetExitKey`
@@ -244,7 +244,7 @@ Set the `Game`'s exit key
 **Default exit key value is ESC**
 
 ```go
-    game.SetExitKey(tcell.KeyCtrlC)
+game.SetExitKey(tcell.KeyCtrlC)
 ```
 
 #### `GetFPS`
@@ -256,7 +256,7 @@ Set the `Game`'s exit key
 Fetch the `Game`'s target FPS.
 
 ```go
-    fps := game.GetFPS() 
+fps := game.GetFPS() 
 ```
 
 #### `SetFPS`
@@ -272,8 +272,8 @@ Set the `Game`'s target FPS.
 **Call this before `game.Init`**
 
 ```go
-    game.SetFPS(30)
-    game.Init()
+game.SetFPS(30)
+game.Init()
 ```
 
 #### `GetLogger`
@@ -285,8 +285,8 @@ Set the `Game`'s target FPS.
 Fetch the `Game`'s Logger instance &ndash; Once you have it, use it like any log.Logger
 
 ```go
-    l := game.GetLogger()
-    l.Println("Logger Out")
+l := game.GetLogger()
+l.Println("Logger Out")
 ```
 
 #### `SetLogFileName`
@@ -301,8 +301,8 @@ logger output. Default value is 'terminus.log'
 **Call this before `game.Init`**
 
 ```go
-    game.SetLogFileName("custom_log.log")
-    game.Init()
+game.SetLogFileName("custom_log.log")
+game.Init()
 ```
 
 #### `Input`
@@ -314,7 +314,7 @@ logger output. Default value is 'terminus.log'
 Fetch the current `Game`'s input data.  
 
 ```go
-    i := game.Input()
+i := game.Input()
 ```
 
 #### `ScreenSize`
@@ -326,7 +326,7 @@ Fetch the current `Game`'s input data.
 Fetch the current screen size
 
 ```go
-    w, h := game.ScreenSize()
+w, h := game.ScreenSize()
 ```
 
 #### `CurrentScene`
@@ -338,7 +338,7 @@ Fetch the current screen size
 Fetch the current `Scene`
 
 ```go
-    scene := game.CurrentScene()
+scene := game.CurrentScene()
 ```
 
 ### Scene
@@ -364,7 +364,7 @@ Fetch the current `Scene`
 Creates a new `Scene` to be used in a `Game`. Uses default screen colors.
 
 ```go
-    s := t.NewScene(g)
+s := t.NewScene(g)
 ```
 
 #### `NewSceneCustom`
@@ -382,7 +382,7 @@ Creates a new `Scene` to be used in a `Game`. Uses default screen colors.
 Creates a new `Scene` with custom foreground and background colors. Foreground affects `Entities`, background is the screen background color.
 
 ```go
-    s := t.NewSceneCustom(g, t.Black, t.Gray)
+s := t.NewSceneCustom(g, t.Black, t.Gray)
 ```
 
 #### `Setup`
@@ -440,16 +440,16 @@ Get the `Scene`'s slice of `Entities`.
 This will return a slice of type `IEntity`. In order to get access to the underlying `Entity`, you can call `iEntity.GetEntity()`.
 
 ```go
-    s := t.NewSceneCustom(g, t.Black, t.Gray)
+s := t.NewSceneCustom(g, t.Black, t.Gray)
 
-    // ...
+// ...
 
-    for _, iEntity := range s.Entities() {
+for _, iEntity := range s.Entities() {
 
-        e := iEntity.GetEntity()
-        e.SetPosition( e.GetX(), e.GetY() + 1)
+    e := iEntity.GetEntity()
+    e.SetPosition( e.GetX(), e.GetY() + 1)
 
-    }
+}
 ```
 
 #### `GetScene`
@@ -461,21 +461,21 @@ This will return a slice of type `IEntity`. In order to get access to the underl
 Returns the `Scene`. This function is exposed via `IScene`, and can be used to get the actual `Scene` for manipulation given a generalized  `IScene`. 
 
 ```go
-    g := NewGame()
+g := NewGame()
 
-    ss := []IScene{
-        t.NewCustomScene(g),
-        t.NewOtherCustomScene(g),
-    }
+ss := []IScene{
+    t.NewCustomScene(g),
+    t.NewOtherCustomScene(g),
+}
 
-    // ...
+// ...
 
-    for _, iScene := ss {
+for _, iScene := ss {
 
-        s := iScene.GetScene()
-        s.Add(t.NewEntity(2, 2))
+    s := iScene.GetScene()
+    s.Add(t.NewEntity(2, 2))
 
-    }
+}
 ```
 
 #### `Add`
@@ -509,7 +509,7 @@ Remove the specified `Entity` from the `Scene`. Once an `Entity` is removed from
 Returns the `Scene`'s game. Useful if you need to reference `Game` in the context of a `Scene`.
 
 ```go
-    g := scene.Game()
+g := scene.Game()
 ```
 
 #### `SetRedraw`
@@ -521,10 +521,10 @@ Returns the `Scene`'s game. Useful if you need to reference `Game` in the contex
 Allows you to tell the `Scene` to redraw (true) or not (false) on the next frame.
 
 ```go
-    // Do something...
+// Do something...
 
-    // Force a scene redraw
-    scene.SetRedraw( true )
+// Force a scene redraw
+scene.SetRedraw( true )
 ```
 
 #### **Custom Scenes**
@@ -534,56 +534,56 @@ Allows you to tell the `Scene` to redraw (true) or not (false) on the next frame
 Below is a very simple skeleton of a custom `Scene` through composition. You will find more detailed real-world examples by reading through the examples included in the package. This `Scene` adds text to the screen and centers it.
 
 ```go
-    package main
+package main
 
-    import (
-        t "github.com/Sheep42/terminus"
-        "github.com/gdamore/tcell"
-    )
+import (
+    t "github.com/Sheep42/terminus"
+    "github.com/gdamore/tcell"
+)
 
-    type CustomScene struct {
-        *t.Scene
-        title *t.Text
+type CustomScene struct {
+    *t.Scene
+    title *t.Text
+}
+
+func NewCustomScene(g *t.Game, fg, bg tcell.Color, title string) *CustomScene {
+
+    cs := &CustomScene{
+        // NewSceneCustom is like NewScene, but allows
+        // custom foreground and background colors
+        t.NewSceneCustom(g, fg, bg),
+        t.NewText(0, 0, title),
     }
 
-    func NewCustomScene(g *t.Game, fg, bg tcell.Color, title string) *CustomScene {
+    return cs
 
-        cs := &CustomScene{
-            // NewSceneCustom is like NewScene, but allows
-            // custom foreground and background colors
-            t.NewSceneCustom(g, fg, bg),
-            t.NewText(0, 0, title),
-        }
+}
 
-        return cs
+func (cs *CustomScene) Setup() {
 
-    }
+    cs.Scene.Setup() // super
+    cs.Add(cs.title)
 
-    func (cs *CustomScene) Setup() {
+}
 
-        cs.Scene.Setup() // super
-        cs.Add(cs.title)
+func (cs *CustomScene) Init() {
 
-    }
+    cs.Scene.Init() // super
 
-    func (cs *CustomScene) Init() {
+    game := cs.Game()
 
-        cs.Scene.Init() // super
+    screenWidth, screenHeight := game.ScreenSize()
+    textWidth, textHeight := cs.title.GetDimensions()
 
-        game := cs.Game()
+    cs.title.SetPosition(screenWidth/2-textWidth/2, screenHeight/2-textHeight/2)
 
-        screenWidth, screenHeight := game.ScreenSize()
-        textWidth, textHeight := cs.title.GetDimensions()
+}
 
-        cs.title.SetPosition(screenWidth/2-textWidth/2, screenHeight/2-textHeight/2)
+func (cs *CustomScene) Update(delta float64) {
 
-    }
+    cs.Scene.Update() // super
 
-    func (cs *CustomScene) Update(delta float64) {
-
-        cs.Scene.Update() // super
-
-    }
+}
 ```
 
 ### Entity
@@ -608,7 +608,7 @@ Takes an x position and a y position and creates an `Entity` without a sprite. T
 * `y int`
 
 ```go
-    e := NewEntity(5, 5)
+e := NewEntity(5, 5)
 ```
 
 #### `NewSpriteEntity`
@@ -626,8 +626,8 @@ Colors are optional - foreground & background required if used.
 * `bg tcell.Color` (optional)
 
 ```go
-    spriteE := t.NewSpriteEntity(5, 5, '#')
-    colorE := t.NewSpriteEntity(5, 5, '#',  tcell.ColorBlack, tcell.ColorGray)
+spriteE := t.NewSpriteEntity(5, 5, '#')
+colorE := t.NewSpriteEntity(5, 5, '#',  tcell.ColorBlack, tcell.ColorGray)
 ```
 
 #### `Init`
@@ -663,16 +663,16 @@ Draw and can be overridden in order to extend or replace functionality. But be c
 Returns the `Entity`. Generally used to get the actual `Entity` from an `IEntity`.
 
 ```go
-    entities := []IEntity{
-        t.NewEntity(5, 5),
-        t.NewSpriteEntity(3, 3, '@'),
-    }
+entities := []IEntity{
+    t.NewEntity(5, 5),
+    t.NewSpriteEntity(3, 3, '@'),
+}
 
-    for _, e := range entities {
+for _, e := range entities {
 
-        e.GetEntity().SetScene(scene)
+    e.GetEntity().SetScene(scene)
 
-    }
+}
 ```
 
 #### `SetScene`
@@ -727,7 +727,7 @@ Gets the y position of the `Entity`
 Sets the `Entity`'s x and y position simultaneously.
 
 ```go
-   e.SetPosition(2, 5)
+e.SetPosition(2, 5)
 ```
 
 **This function flags the `Scene` for redraw**
@@ -741,7 +741,7 @@ Sets the `Entity`'s x and y position simultaneously.
 Gets the `Entity`'s x and y position simultaneously.
 
 ```go
-    x, y := e.GetPosition()
+x, y := e.GetPosition()
 ```
 
 #### `SetSprite`
@@ -786,8 +786,8 @@ Changes the `Entity`'s style foreground and background colors.
 Checks if the `Entity` currently overlaps the target `Entity`. Overlaps is simply a check if two `Entities` occupy the same coordinates.
 
 ```go
-    // Checks if e is currently overlapping e2
-    overlaps := e.Overlaps(e2)
+// Checks if e is currently overlapping e2
+overlaps := e.Overlaps(e2)
 ```
 
 #### `OverlapsPoint`
@@ -804,8 +804,8 @@ Checks if the `Entity` currently overlaps the target `Entity`. Overlaps is simpl
 Checks if the `Entity` overlaps the specified screen point.
 
 ```go
-    // Checks if e is currently overlapping (2, 5)
-    overlaps := e.OverlapsPoint(2, 5)
+// Checks if e is currently overlapping (2, 5)
+overlaps := e.OverlapsPoint(2, 5)
 ```
 
 #### `CheckDir`
@@ -823,15 +823,15 @@ Checks if the `Entity` overlaps the specified screen point.
 Checks if the `Entity` is the specified distance away from the target point.
 
 ```go
-    
-    eX, eY := e.GetPosition()
-    e2X, e2Y := e2.GetPosition()
 
-    changeX := 1
-    changeY := 0
+eX, eY := e.GetPosition()
+e2X, e2Y := e2.GetPosition()
 
-    // check if changing position of e by changeX, changeY would result in a collision
-    collided := e.CheckDir('x', changeX, e2X) && e.CheckDir('y', changeY, e2Y)
+changeX := 1
+changeY := 0
+
+// check if changing position of e by changeX, changeY would result in a collision
+collided := e.CheckDir('x', changeX, e2X) && e.CheckDir('y', changeY, e2Y)
 
 ```
 
@@ -850,8 +850,8 @@ Checks if the `Entity` is directly to the left of the target `Entity`
 Note: This function checks if `Entity` is exactly 1 unit in the specified direction.
 
 ```go
-    // checks if e is directly left of e2
-    isLeft := e.IsLeftOf(e2)
+// checks if e is directly left of e2
+isLeft := e.IsLeftOf(e2)
 ```
 
 #### `IsRightOf`
