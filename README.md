@@ -1,7 +1,5 @@
 # terminus
-A simple terminal game engine in Go (still WIP)
-
-Built using [tcell](https://github.com/gdamore/tcell)
+A simple terminal game engine in Go. Built using [tcell](https://github.com/gdamore/tcell)
 
 Terminus is a hobby project and it comes with no warranty or guarantee. I built it for myself, in order to create a flexible, easy-to-use, cross-platform engine for building games for the command line.
 
