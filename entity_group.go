@@ -144,4 +144,6 @@ func (eg *EntityGroup) SetEntities(entities []IEntity) {
 
 	}
 
+	eg.scene.redraw = true
+
 }
