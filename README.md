@@ -1150,8 +1150,8 @@ Takes an x position, y position, and textvalue and creates a new `Text` on the s
 If colors are passed, fg & bg are required.
 
 ```go
-	t.NewText(5, 5, "Hello World")
-	t.NewText(0, 0, "Press ESC to quit", t.Blue, t.Black)
+t.NewText(5, 5, "Hello World")
+t.NewText(0, 0, "Press ESC to quit", t.Blue, t.Black)
 ```
 
 `Update`
