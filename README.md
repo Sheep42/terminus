@@ -105,6 +105,41 @@ It is easy to create some awkward designs this way, so it is worth thinking thro
 
 Outside of that, there really isn't that much to learn, and you should be able to be making a game relatively quickly.
 
+### Constants
+
+I've provided some basic mappings to useful tcell Colors and Keys, but all color references remain `tcell.Color`s and all Keys are `tcell.EventKey`s. If a direct mapping is missing from terminus, you can simply import tcell and pull what you need directly from there.
+
+#### Colors
+
+```go
+terminus.White      = tcell.ColorWhite
+terminus.Black      = tcell.ColorBlack
+terminus.Gray       = tcell.ColorGray
+terminus.Red        = tcell.ColorRed
+terminus.Pink       = tcell.ColorPink
+terminus.DarkRed    = tcell.ColorDarkRed
+terminus.Green      = tcell.ColorGreen
+terminus.LightGreen = tcell.ColorLightGreen
+terminus.DarkGreen  = tcell.ColorDarkGreen
+terminus.Blue       = tcell.ColorBlue
+terminus.LightBlue  = tcell.ColorLightBlue
+terminus.DarkBlue   = tcell.ColorDarkBlue
+terminus.Orange     = tcell.ColorOrange
+terminus.Purple     = tcell.ColorPurple
+terminus.Yellow     = tcell.ColorYellow
+```
+
+#### Keys
+
+```go
+terminus.KeyEsc   = tcell.KeyEscape
+terminus.KeyUp    = tcell.KeyUp
+terminus.KeyDown  = tcell.KeyDown
+terminus.KeyRight = tcell.KeyRight
+terminus.KeyLeft  = tcell.KeyLeft
+terminus.KeyEnter = tcell.KeyEnter
+```
+
 ### Simple Example
 
 The most basic example is the Hello World example included in the examples directory. The full source is contained in main.go, and is duplicated below.
