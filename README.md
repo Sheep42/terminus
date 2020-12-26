@@ -1161,6 +1161,7 @@ Below are the overridden or unique functions.
 * `bg tcell.Color` - optional
 
 Takes an x position, y position, and textvalue and creates a new `Text` on the screen. 
+
 If colors are passed, fg & bg are required.
 
 ```go
@@ -1216,10 +1217,86 @@ Gets the underlying `EntityGroup` behind the `Text`.
 
 ## StateManager
 
-    Coming Soon
+`StateManager` is a simple state machine that should suffice for most simple games as is. However, it can be extended via composition if desired.
+
+A `StateManager` can be used with any derivative of `Scene` or `Entity`.
+
+Generally, when using a `StateManager`, you'll want to override `Scene` or `Entity` `Update` function, and call `sm.Update(delta)` from there. See the states or snake examples for more examples of basic state management.
+
+#### Functions 
+
+---
+
+`NewStateManager`
+
+**Params**
+
+* `defaultState IState`
+
+**Return**
+
+* `stateManager *StateManager`
+
+Creates a new `StateManager` and sets the default `State` to `defaultState`.
+
+`ChangeState`
+
+**Params**
+
+* `state IState`
+
+Changes the current `State` of the `StateManager` to `state`.
+
+`BackToDefault`
+
+Changes the current `State` of the `StateManager` back to the default `State`.
+
+`BackToPrevious`
+
+Changes the current `State` of the `StateManager` back to the previous `State`.
+
+`Update`
+
+**Params**
+
+* `delta float64`
+
+On the first pass, sets the `StateManager`'s current `State` to the default `State`. 
+
+On every pass, invokes current `State`'s `Tick` function.
 
 ---
 
 ## State
 
-    Coming Soon
+`State` is an abstract struct meant to be extended for use with any `Scene` or `Entity`, and to be managed by a `StateManager`.
+
+See the states or snake examples for more examples of custom `State`s.
+
+#### Functions
+
+---
+
+`NewState`
+
+**Return**
+
+* `state *State`
+
+Creates a new State to be used by a `StateManager`.
+
+`OnEnter`
+
+Fired every time a `State` is entered. (After a call to `stateManager.ChangeState()`)
+
+`OnExit`
+
+Fired every time a `State` is exited. (After a call to `stateManager.ChangeState()`)
+
+`Tick`
+
+**Params**
+
+* `delta float64`
+
+Fired on every pass through `stateManager.Update()`, when the `State` is `StateManager`'s current `State`.
