@@ -34,4 +34,4 @@ func (state *State) OnExit() {}
 
 // Tick is fired each frame.
 // This should be overridden
-func (state *State) Tick() {}
+func (state *State) Tick(delta float64) {}
