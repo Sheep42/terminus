@@ -133,7 +133,7 @@ func main() {
 
 ---
 
-### Game
+## Game
 
 `Game` is the main component of the engine. There is no interface to allow for extension of `Game` itself.
 
@@ -346,7 +346,7 @@ scene := game.CurrentScene()
 ---
 
 
-### Scene
+## Scene
 
 `Scene`s are used to render content to a `Game` screen, and a `Scene` is usually the first thing that you will add to a game.
 
@@ -594,7 +594,7 @@ func (cs *CustomScene) Update(delta float64) {
 ---
 
 
-### Entity
+## Entity
 
 An `Entity` is used to represent any general object that will exist in a `Scene`. 
 
@@ -984,7 +984,7 @@ func (m *Moveable) Update(delta float64) {
 ---
 
 
-### EntityGroup
+## EntityGroup
 
 `EntityGroup`s are a simple extension of `Entity` which allow for grouping of many `Entities` into the context of a single `Entity`. 
 
@@ -1126,14 +1126,33 @@ Sets the `EntityGroup`'s list of entities
 
 ---
 
-### Text
+## Text
+
+`Text` is an extension of `EntityGroup`. As such, `Text` inherits all of `Entity`'s functionality, as well as `EntityGroup`'s.
+
+Below are the overridden or unique functions.
+
+#### **Functions**
+
+---
+
+`NewText`
+
+`Update`
+
+`ToEntities`
+
+`SetText`
+
+`GetText`
+
+`GetEntityGroup`
+
+
+## StateManager
 
     Coming Soon
 
-### StateManager
-
-    Coming Soon
-
-### State
+## State
 
     Coming Soon
