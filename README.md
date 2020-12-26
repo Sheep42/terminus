@@ -13,6 +13,20 @@ If you like it and find it useful, please feel free to use it. Keep in mind thou
 
 ![Image of collision example](examples/images/collision.gif?raw=true "Collision Example")
 
+# Contents
+
+- [Installing](#installing)
+- [Examples](#running-the-examples)
+- [Understanding the Engine](#understanding-the-engine)
+- [Types](#game)
+    - [Game](#game)
+    - [Scene](#scene)
+    - [Entity](#entity)
+    - [EntityGroup](#entitygroup)
+    - [Text](#text-1)
+    - [StateManager](#statemanager)
+    - [State](#state)
+
 ## Installing
 
 ```bash
