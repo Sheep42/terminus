@@ -983,13 +983,146 @@ func (m *Moveable) Update(delta float64) {
 
 ---
 
+
 ### EntityGroup
+
+`EntityGroup`s are a simple extension of `Entity` which allow for grouping of many `Entities` into the context of a single `Entity`. 
+
+`EntityGroups` have some special properties:
+
+* `Entities` added to an `EntityGroup` are postioned relative to the `EntityGroup`, not the screen. This means, if `e := NewEntity(0, 0)` and `eg := NewEntityGroup(5, 5, 10, 10, []IEntity{e})`,  `e`'s screen position would be (5, 5), while it's relative position would be (0, 0).
+
+* `Entities` whose coordinates exist outside of the `EntityGroup`'s bounds will not be rendered to the screen. However, the `Entities` will still exist and can still be manipulated.
+
+* `EntityGroup`s will move as a single `Entity`, moving all `Entities` contained within. So, moving an `EnitityGroup` 1 unit to the right will move all of that `EntityGroup`'s children 1 unit to the right as well. Individual `Entities` can be targeted and moved within the `EntityGroup` as well, if needed.
+
+* `Entities` within an `EntityGroup` will inherit their color from the `EntityGroup`. At the moment, you cannot set individual `Entity` colors in an `EntityGroup`.
 
 #### **Functions**
 
 ---
 
+As `EntityGroup` is an extension of `Entity` it shares all `Entity`'s functions. You can reference above for details on the functions that carry over. 
 
+I'll detail `EntityGroup` specific or overridden functions below.
+
+`NewEntityGroup`
+
+**Params**
+
+* `x int`
+* `y int`
+* `width int`
+* `height int`
+* `entities []IEntity`
+* `fg tcell.Color` - optional 
+* `bg tcell.Color` - optional
+
+**Return**
+
+* `entityGroup *EntityGroup`
+
+Creates a new `EntityGroup` with coordinates (`x`, `y`) of specified `width` and `height`. `entities` should contain the `Entities` to be grouped.
+
+```go
+e := t.NewSpriteEntity(0, 0, '#')
+e2 := t.NewCustomEntity(0, 0, '#')
+
+eg := t.NewEntityGroup(5, 5, 10, 10, []IEntity{e, e2})
+eg2 := t.NewEntityGroup(20, 20, 10, 10, []IEntity{e, e2}, t.RED, t.BLUE) 
+```
+
+`Init`
+
+Invokes `eg.Entity.Init()`. Can be overridden for custom functionality.
+
+`Update`
+
+**Params**
+
+* `delta float`
+
+Invokes `eg.Entity.Update()`. Can be overridden for custom functionality.
+
+`Draw`
+
+Does not invoke `Entity`'s `Draw` function. 
+
+Loops through `entities` and renders the `Entities` in the group to the screen. This can be overridden for custom functionality, but doing so without calling `EntityGroup.Draw()` means you will need to handle rendering on your own.
+
+`SetScene`
+
+**Params**
+
+* `scene *Scene`
+
+Sets the `Scene` for the `EntityGroup`, but also invokes `SetScene` for each child `Entity`, passing in `scene`. 
+
+`GetEntity`
+
+**Return**
+
+* `entity *Entity`
+
+Gets the `Entity` that represents the `EntityGroup` as a whole. (The positioning `Entity`)
+
+`GetEntities`
+
+**Return**
+
+* `entities []IEntity`
+
+Gets the slice of `Entities` within the `EntityGroup`. Since `entities` is of type `[]IEntity`, you'll need to call `GetEntity()` to operate on specific types of `Entities`. 
+
+```go
+entities := eg.GetEntities()
+
+for _, iEntity := entities {
+    
+    e := iEntity.GetEntity()
+    
+    e.SetPosition(2, 2)
+
+}
+```
+
+`SetWidth`
+
+**Params**
+
+* `width int`
+
+Sets the `EntityGroup`'s width
+
+**This function flags the `Scene` for redraw**
+
+`SetHeight`
+
+**Params**
+
+* `height int`
+
+Sets the `EntityGroup`'s height
+
+**This function flags the `Scene` for redraw**
+
+`GetDimensions`
+
+**Return**
+
+* `width int, height int`
+
+Returns the width and height of the `EntityGroup`
+
+`SetEntities`
+
+**Params**
+
+* `entities []IEntity`
+
+Sets the `EntityGroup`'s list of entities
+
+**This function flags the `Scene` for redraw**
 
 ---
 
