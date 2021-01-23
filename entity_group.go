@@ -110,6 +110,18 @@ func (eg *EntityGroup) GetEntities() []IEntity {
 	return eg.entities
 }
 
+// GetEntityAt returns the Entity at the specified index
+// if idx is out of bounds ok returns false
+func (eg *EntityGroup) GetEntityAt(idx int) (*Entity, bool) {
+
+	if idx < 0 || idx >= len(eg.entities) {
+		return nil, false
+	}
+
+	return eg.entities[idx].GetEntity(), true
+
+}
+
 // SetWidth sets the width of the EntityGroup
 func (eg *EntityGroup) SetWidth(width int) {
 	eg.width = width
