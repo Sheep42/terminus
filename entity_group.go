@@ -122,6 +122,34 @@ func (eg *EntityGroup) GetEntityAt(idx int) (*Entity, bool) {
 
 }
 
+// Add adds an Entity to an EntityGroup and flags the
+// scene for redraw
+func (eg *EntityGroup) Add(entity IEntity) {
+	eg.entities = append(eg.entities, entity)
+	eg.scene.redraw = true
+}
+
+// Remove removes an Entity from an EntityGroup and flags the
+// scene for redraw. This maintains existing entity order.
+func (eg *EntityGroup) Remove(entity IEntity) {
+
+	for i, e := range eg.entities {
+
+		if e.GetEntity() == entity.GetEntity() {
+
+			copy(eg.entities[i:], eg.entities[i+1:])
+			eg.entities[len(eg.entities)-1] = nil
+			eg.entities = eg.entities[:len(eg.entities)-1]
+			break
+
+		}
+
+	}
+
+	eg.scene.redraw = true
+
+}
+
 // SetWidth sets the width of the EntityGroup
 func (eg *EntityGroup) SetWidth(width int) {
 	eg.width = width
