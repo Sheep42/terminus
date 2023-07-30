@@ -101,7 +101,8 @@ func (entity *Entity) GetEntity() *Entity {
 	return entity
 }
 
-// GetEntityGroup gets the EntityGroup that the Entity belongs to
+// GetEntityGroup gets the EntityGroup that the Entity belongs to.
+//
 // Returns nil if not part of an EntityGroup
 func (entity *Entity) GetEntityGroup() *EntityGroup {
 	return entity.group
@@ -148,9 +149,23 @@ func (entity *Entity) SetPosition(x, y int) {
 }
 
 // GetPosition returns the entity's current x and y
-// position
+// values
 func (entity *Entity) GetPosition() (int, int) {
 	return entity.x, entity.y
+}
+
+// GetScreenPosition Gets the screen x and y for the
+// Entity. This will be different than GetPosition
+// when the Entity is part of an EntityGroup
+func (entity *Entity) GetScreenPosition() (int, int) {
+
+	if nil == entity.group {
+		return entity.GetPosition()
+	}
+
+	groupX, groupY := entity.group.GetPosition()
+	return entity.x + groupX, entity.y + groupY
+
 }
 
 // SetSprite sets the Entity's sprite rune
