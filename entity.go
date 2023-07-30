@@ -12,6 +12,8 @@ type IEntity interface {
 	Draw()
 	SetScene(scene *Scene)
 	GetEntity() *Entity
+	GetEntityGroup() *EntityGroup
+	SetEntityGroup(group *EntityGroup)
 }
 
 // Entity represents a simple entity to be rendered
@@ -23,6 +25,8 @@ type Entity struct {
 	x      int
 	y      int
 	sprite rune
+
+	group *EntityGroup
 
 	colors []tcell.Color
 }
@@ -95,6 +99,17 @@ func (entity *Entity) Draw() {
 // GetEntity returns the entity in question
 func (entity *Entity) GetEntity() *Entity {
 	return entity
+}
+
+// GetEntityGroup gets the EntityGroup that the Entity belongs to
+// Returns nil if not part of an EntityGroup
+func (entity *Entity) GetEntityGroup() *EntityGroup {
+	return entity.group
+}
+
+// SetEntityGroup sets the Entity's EntityGroup
+func (entity *Entity) SetEntityGroup(group *EntityGroup) {
+	entity.group = group
 }
 
 // SetScene Sets the Entity's Scene and Game

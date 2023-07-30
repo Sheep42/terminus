@@ -126,6 +126,7 @@ func (eg *EntityGroup) GetEntityAt(idx int) (*Entity, bool) {
 // scene for redraw
 func (eg *EntityGroup) Add(entity IEntity) {
 	eg.entities = append(eg.entities, entity)
+	entity.SetEntityGroup(eg)
 	eg.scene.redraw = true
 }
 
