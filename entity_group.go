@@ -24,6 +24,10 @@ func NewEntityGroup(x, y, width, height int, entities []IEntity, colors ...tcell
 
 	eg.colors = colors
 
+	for _, e := range eg.entities {
+		e.SetEntityGroup(eg)
+	}
+
 	return eg
 
 }
